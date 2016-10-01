@@ -113,7 +113,8 @@ public class FreeCellController implements IFreeCellController<Card> {
           } catch (IllegalArgumentException e1) {
             try {
               ap.append("Invalid move. Try again.");
-            } catch (IOException e2) {
+            } catch (IOException e2) {//move again
+
             }
           }
         }
