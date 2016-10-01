@@ -197,14 +197,28 @@ public class FreeCellModel implements IFreeCellModel<Card> {
           case FOUNDATION:
             Pile<Card> fp = foundationPileList.get(destPileNumber);
             Card lfc = fp.lastCard();
-            if (lfc.nextCard(casc)) {
-              fp.add(casc);
-              casp.remove(casc);
-              break;
+            if (fp.isEmpty()) {
+              if (casc.cardValue() == 1) {
+                fp.add(casc);
+                casp.remove(casc);
+                break;
+              }
+              else {
+                throw new IllegalArgumentException("Only Ace can be placed " +
+                        "into a empty foundation pile");
+              }
             }
             else {
-              throw new IllegalArgumentException("Invalid move");
+              if (lfc.nextCard(casc)) {
+                fp.add(casc);
+                casp.remove(casc);
+                break;
+              }
+              else {
+                throw new IllegalArgumentException("Invalid move");
+              }
             }
+
 
           case CASCADE:
             Pile<Card> cp = cascadePileList.get(destPileNumber);
