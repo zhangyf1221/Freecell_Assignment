@@ -59,7 +59,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
     if (shuffle) {
       Collections.shuffle(deck);
-      this.deck = deck;
+      //this.deck = deck;
     }
     else {
       this.deck = deck;

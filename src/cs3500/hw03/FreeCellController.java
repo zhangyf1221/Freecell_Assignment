@@ -59,13 +59,13 @@ public class FreeCellController implements IFreeCellController<Card> {
         PileType destType;
 
         switch (ST) {
-          case "OPEN":
+          case "open":
             sourceType = PileType.OPEN;
             break;
-          case "CASCADE":
+          case "cascade":
             sourceType = PileType.CASCADE;
             break;
-          case "Foundation":
+          case "foundation":
             sourceType = PileType.FOUNDATION;
             break;
           case "Q":
