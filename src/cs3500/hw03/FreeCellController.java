@@ -41,16 +41,26 @@ public class FreeCellController implements IFreeCellController<Card> {
   }
 
   private void run() {
-    Scanner s1 = new Scanner(rd);
+    Scanner s = new Scanner(rd);
     while(!model.isGameOver()) {
       try {
         ap.append("\n");
         ap.append("Enter your move: " +
                 "(SourceType, PileIndex, CardIndex, DestType, PileIndex)");
-        String ST = s1.next();
+        String ST = s.next();
       }
 
     }
   }
+
+  public static void main(String[] args) {
+    FreeCellController controller =
+            new FreeCellController(new InputStreamReader(System.in), System.out);
+    FreeCellModel model = new FreeCellModel();
+    Scanner s = new Scanner(controller.rd);
+
+  }
+
+
 
 }
