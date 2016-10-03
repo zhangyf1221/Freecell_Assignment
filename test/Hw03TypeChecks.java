@@ -43,7 +43,7 @@ public class Hw03TypeChecks {
     controller.playGame(deck, model, 7, 4, false);
   }
 
-  <K> void checkNewModel(IFreeCellModel<K> model, List<K> deck) {
+  static <K> void checkNewModel(IFreeCellModel<K> model, List<K> deck) {
     List<K> initialDeck = model.getDeck();
     model.startGame(initialDeck, 7, 4, false);
     model.move(PileType.CASCADE, 0, 7, PileType.FOUNDATION, 0);

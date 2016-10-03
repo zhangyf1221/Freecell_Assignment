@@ -1,5 +1,5 @@
 package cs3500.hw03;
-import java.util.Collections;
+
 import java.util.List;
 
 import cs3500.hw02.Card;
@@ -49,80 +49,96 @@ public class FreeCellController implements IFreeCellController<Card> {
     while (!model.isGameOver()) {
       try {
         ap.append("\n");
-        ap.append("Enter your move: (SourceType, SourceType Index, " +
-                "CardIndex, DestType, DestTypeIndex)");
-        ap.append("\n");
+        ap.append("Enter your move: (SourceType + Index, " +
+                "CardIndex, DestType + Index)\n");
 
-        String ST = s.next();
 
-        boolean isToExit = false;
+        String source = s.next();
+        int index = s.nextInt();
+        String dest = s.next();
+        int si;
+        int di;
 
         PileType sourceType;
         PileType destType;
 
-        switch (ST) {
-          case "open":
-            sourceType = PileType.OPEN;
-            break;
-          case "cascade":
-            sourceType = PileType.CASCADE;
-            break;
-          case "foundation":
-            sourceType = PileType.FOUNDATION;
-            break;
-          case "Q":
+        boolean isToExit = false;
+
+        if (source.length() == 2) {
+          char st = source.charAt(0);
+          char rawSourceIndex = source.charAt(1);
+          si = Character.getNumericValue(rawSourceIndex);
+
+          switch (st) {
+            case 'O':
+              sourceType = PileType.OPEN;
+              break;
+            case 'C':
+              sourceType = PileType.CASCADE;
+              break;
+            case 'F':
+              sourceType = PileType.FOUNDATION;
+              break;
+            default:
+              throw new IllegalArgumentException("Invalid source pile type");
+          }
+        }
+        else {
+          if (source == "Q" || source == "q") {
             isToExit = true;
             sourceType = PileType.CASCADE;
-            break;
-          case "q":
-            isToExit = true;
-            sourceType = PileType.CASCADE;
-            break;
-          default:
-            throw new IllegalArgumentException("Invalid source pile type");
+            si = 1;
+          }
+          else {
+            throw new InputMismatchException("Invalid input");
+          }
         }
 
+        if (dest.length() == 2) {
+          char dt = dest.charAt(0);
+          char rawDestIndex = dest.charAt(1);
+          di = Character.getNumericValue(rawDestIndex);
 
-        int SI = s.nextInt();
-        int CI = s.nextInt();
-        String DT = s.next();
-        int DI = s.nextInt();
-
-        switch (DT) {
-          case "open":
-            destType = PileType.OPEN;
-            break;
-          case "cascade":
+          switch (dt) {
+            case 'O':
+              destType = PileType.OPEN;
+              break;
+            case 'C':
+              destType = PileType.CASCADE;
+              break;
+            case 'F':
+              destType = PileType.FOUNDATION;
+              break;
+            default:
+              throw new IllegalArgumentException("Invalid destination pile type");
+          }
+        }
+        else {
+          if (dest == "Q" || dest == "q") {
+            isToExit = true;
             destType = PileType.CASCADE;
-            break;
-          case "foundation":
-            destType = PileType.FOUNDATION;
-            break;
-          default:
-            throw new IllegalArgumentException("Invalid destination pile type");
+            di = 1;
+          }
+          else {
+            throw new InputMismatchException("Invalid input");
+          }
         }
 
         if (isToExit) {
           try {
             ap.append("Game quit prematurely.");
-          } catch (IOException e4) {
           }
-        } else {
-          try {
-            model.move(sourceType, SI, CI, destType, DI);
-            ap.append(model.getGameState());
-
-          } catch (IllegalArgumentException e1) {
-            try {
-              System.out.print("Invalid move. Try again.");
-              ap.append("Invalid move. Try again.");
-            } catch (IOException e2) {//move again
-
-            }
-          }
+          catch (IOException e4) {}
         }
-      } catch (IOException e3) {
+        else {
+          try {
+            model.move(sourceType, si - 1, index - 1, destType, di - 1);
+            ap.append(model.getGameState());
+          }
+          catch (IOException e5) {}
+        }
       }
+      catch (IOException e3) {}
     }
   }
 
@@ -137,7 +153,7 @@ public class FreeCellController implements IFreeCellController<Card> {
 
     while (inProgress) {
       try {
-        controller.ap.append("Enter number of cascade pile, number of open pile " +
+        controller.ap.append("\nEnter number of cascade pile, number of open pile " +
                 "and shuffle or not");
         String cascade = s.next();
         String open = s.next();
@@ -178,7 +194,7 @@ public class FreeCellController implements IFreeCellController<Card> {
             shf = false;
             break;
           default:
-            throw new IllegalArgumentException("Invalid input");
+            throw new InputMismatchException("Invalid input");
         }
 
         try {
@@ -194,10 +210,13 @@ public class FreeCellController implements IFreeCellController<Card> {
               controller.playGame(deck, model, numCascade, numOpen, shf);
               controller.ap.append(model.getGameState());
             } catch (IOException e6) {
+              e6.printStackTrace();
             }
           }
         }
-        catch (IllegalArgumentException e4){}
+        catch (InputMismatchException e4) {
+          controller.ap.append("Invalid input");
+        }
       }
       catch (IOException e3) {}
     }
