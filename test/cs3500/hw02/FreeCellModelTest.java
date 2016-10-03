@@ -3,10 +3,12 @@ package cs3500.hw02;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Created by jowenfan on 9/28/16.
@@ -18,6 +20,8 @@ public class FreeCellModelTest {
   private List<Pile> foundationPileList = new ArrayList<Pile>();
   private List<Pile> openPileList = new ArrayList<Pile>();
   private List<Pile> cascadePileList = new ArrayList<Pile>();
+
+  private FreeCellModel model2;
 
   private List<Card> initDeck1() {
     return Arrays.asList(
@@ -80,7 +84,10 @@ public class FreeCellModelTest {
     model1.startGame(deck1, 8, 4, false);
   }
 
-
+  private void initGame2() {
+    model2 = new FreeCellModel();
+    model2.startGame(deck1, 8, 4, true);
+  }
 
   @Test
   public void getDeck() throws Exception {
@@ -102,7 +109,9 @@ public class FreeCellModelTest {
   @Test
   public void getGameState() throws Exception {
     initGame1();
+    initGame2();
     assertEquals(gameState1, model1.getGameState());
+    assertNotEquals(gameState1, model2.getGameState());
   }
 
   private String gameState1 = "F1: " +

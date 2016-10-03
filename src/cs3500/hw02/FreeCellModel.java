@@ -59,10 +59,6 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
     if (shuffle) {
       Collections.shuffle(deck);
-      //this.deck = deck;
-    }
-    else {
-      this.deck = deck;
     }
 
     if (this.validDeck(deck) && numCascadePiles >= 4 && numOpenPiles >= 1) {
@@ -77,6 +73,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
         openPileList.add(new Pile());
       }
 
+      // Place card in pile
       for (int i = 0; i < deck.size(); i++) {
         int whichPile = i % numCascadePiles;
         cascadePileList.get(whichPile).add(deck.get(i));

@@ -1,4 +1,5 @@
 package cs3500.hw03;
+import java.util.Collections;
 import java.util.List;
 
 import cs3500.hw02.Card;
@@ -33,11 +34,12 @@ public class FreeCellController implements IFreeCellController<Card> {
 
   public void playGame(List<Card> deck, IFreeCellModel<Card> model, int numCascades,
                        int numOpens, boolean shuffle) {
-    this.model = model;
     model.startGame(deck, numCascades, numOpens, shuffle);
+    this.model = model;
     try {
       ap.append(model.getGameState());
     } catch (IOException e0) {
+      System.out.print(e0);
     }
     run();
   }
@@ -87,13 +89,13 @@ public class FreeCellController implements IFreeCellController<Card> {
         int DI = s.nextInt();
 
         switch (DT) {
-          case "OPEN":
+          case "open":
             destType = PileType.OPEN;
             break;
-          case "CASCADE":
+          case "cascade":
             destType = PileType.CASCADE;
             break;
-          case "Foundation":
+          case "foundation":
             destType = PileType.FOUNDATION;
             break;
           default:
@@ -112,6 +114,7 @@ public class FreeCellController implements IFreeCellController<Card> {
 
           } catch (IllegalArgumentException e1) {
             try {
+              System.out.print("Invalid move. Try again.");
               ap.append("Invalid move. Try again.");
             } catch (IOException e2) {//move again
 
@@ -157,17 +160,25 @@ public class FreeCellController implements IFreeCellController<Card> {
           numOpen = Integer.parseInt(open);
         }
 
-
-        if (shuffle == "q" || shuffle == "Q") {
-          isToExit = true;
-          shf = false;
-        }
-        else {
-          if (shuffle == "true") {
-            shf = true;
-          } else {
+        switch (shuffle) {
+          case "Q":
+            isToExit = true;
             shf = false;
-          }
+            break;
+          case "q":
+            isToExit = true;
+            shf = false;
+            break;
+          case "true" :
+            isToExit = false;
+            shf = true;
+            break;
+          case "false" :
+            isToExit = false;
+            shf = false;
+            break;
+          default:
+            throw new IllegalArgumentException("Invalid input");
         }
 
         try {
@@ -180,7 +191,7 @@ public class FreeCellController implements IFreeCellController<Card> {
           else {
             try {
               List<Card> deck = model.getDeck();
-              controller.playGame(deck, model, numCascade, numOpen,shf);
+              controller.playGame(deck, model, numCascade, numOpen, shf);
               controller.ap.append(model.getGameState());
             } catch (IOException e6) {
             }
