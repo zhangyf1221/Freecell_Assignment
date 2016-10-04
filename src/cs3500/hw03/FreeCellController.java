@@ -149,11 +149,15 @@ public class FreeCellController implements IFreeCellController<Card> {
     Scanner s = new Scanner(controller.rd);
 
     boolean inProgress = true;
-    boolean isToExit = false;
+    boolean callExit1 = false;
+    boolean callExit2 = false;
+    boolean callExit3 = false;
+    boolean isToExit;
+    isToExit = (callExit1 || callExit2 || callExit3);
 
     while (inProgress) {
       try {
-        controller.ap.append("\nEnter number of cascade pile, number of open pile " +
+        controller.ap.append("Enter number of cascade pile, number of open pile " +
                 "and shuffle or not");
         String cascade = s.next();
         String open = s.next();
@@ -163,34 +167,36 @@ public class FreeCellController implements IFreeCellController<Card> {
         boolean shf;
 
         if (cascade == "Q" || cascade == "q") {
-          isToExit = true;
-          numCascade = Integer.parseInt(cascade);
+          callExit1 = true;
+          numCascade = 1;
         } else {
           numCascade = Integer.parseInt(cascade);
+
         }
 
         if (open == "Q" || open == "q") {
-          isToExit = true;
-          numOpen = Integer.parseInt(open);
+          callExit2 = true;
+          numOpen = 1;
         } else {
           numOpen = Integer.parseInt(open);
+
         }
 
         switch (shuffle) {
           case "Q":
-            isToExit = true;
+            callExit3 = true;
+            inProgress = false;
             shf = false;
             break;
           case "q":
-            isToExit = true;
+            callExit3 = true;
+            inProgress = false;
             shf = false;
             break;
           case "true" :
-            isToExit = false;
             shf = true;
             break;
           case "false" :
-            isToExit = false;
             shf = false;
             break;
           default:
@@ -210,7 +216,7 @@ public class FreeCellController implements IFreeCellController<Card> {
               controller.playGame(deck, model, numCascade, numOpen, shf);
               controller.ap.append(model.getGameState());
             } catch (IOException e6) {
-              e6.printStackTrace();
+              controller.ap.append("Could not start game.");
             }
           }
         }
