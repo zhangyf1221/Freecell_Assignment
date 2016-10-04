@@ -148,11 +148,11 @@ public class FreeCellController implements IFreeCellController<Card> {
     Scanner s = new Scanner(controller.rd);
 
     boolean inProgress = true;
-    boolean callExit1 = false;
+    boolean callExit1;
     boolean callExit2;
     boolean callExit3;
     boolean isToExit;
-    isToExit = (callExit1 || callExit2 || callExit3);
+
 
     while (inProgress) {
       try {
@@ -178,7 +178,7 @@ public class FreeCellController implements IFreeCellController<Card> {
           numOpen = 1;
         } else {
           numOpen = Integer.parseInt(open);
-
+          callExit2 = false;
         }
 
         switch (shuffle) {
@@ -194,13 +194,17 @@ public class FreeCellController implements IFreeCellController<Card> {
             break;
           case "true" :
             shf = true;
+            callExit3 = false;
             break;
           case "false" :
             shf = false;
+            callExit3 = false;
             break;
           default:
             throw new InputMismatchException("Invalid input!!");
         }
+
+        isToExit = (callExit1 || callExit2 || callExit3);
 
         try {
           if (isToExit) {
