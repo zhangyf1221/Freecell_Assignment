@@ -46,99 +46,98 @@ public class FreeCellController implements IFreeCellController<Card> {
 
   private void run() {
     Scanner s = new Scanner(rd);
-    while (!model.isGameOver()) {
-      try {
-        ap.append("\n");
-        ap.append("Enter your move: (SourceType + Index, " +
-                "CardIndex, DestType + Index)\n");
+    boolean inProgress = true;
+    while (inProgress) {
+      while (!model.isGameOver()) {
+        try {
+          ap.append("\n");
+          ap.append("Enter your move: (SourceType + Index, " +
+                  "CardIndex, DestType + Index)\n");
 
 
-        String source = s.next();
-        int index = s.nextInt();
-        String dest = s.next();
-        int si;
-        int di;
+          String source = s.next();
+          int index = s.nextInt();
+          String dest = s.next();
+          int si;
+          int di;
 
-        PileType sourceType;
-        PileType destType;
+          PileType sourceType;
+          PileType destType;
 
-        boolean isToExit = false;
+          boolean isToExit = false;
 
-        if (source.length() == 2) {
-          char st = source.charAt(0);
-          char rawSourceIndex = source.charAt(1);
-          si = Character.getNumericValue(rawSourceIndex);
+          if (source.length() == 2) {
+            char st = source.charAt(0);
+            char rawSourceIndex = source.charAt(1);
+            si = Character.getNumericValue(rawSourceIndex);
 
-          switch (st) {
-            case 'O':
-              sourceType = PileType.OPEN;
-              break;
-            case 'C':
+            switch (st) {
+              case 'O':
+                sourceType = PileType.OPEN;
+                break;
+              case 'C':
+                sourceType = PileType.CASCADE;
+                break;
+              case 'F':
+                sourceType = PileType.FOUNDATION;
+                break;
+              default:
+                throw new IllegalArgumentException("Invalid source pile type");
+            }
+          } else {
+            if (source == "Q" || source == "q") {
+              isToExit = true;
               sourceType = PileType.CASCADE;
-              break;
-            case 'F':
-              sourceType = PileType.FOUNDATION;
-              break;
-            default:
-              throw new IllegalArgumentException("Invalid source pile type");
+              si = 1;
+            } else {
+              throw new InputMismatchException();
+            }
           }
-        }
-        else {
-          if (source == "Q" || source == "q") {
-            isToExit = true;
-            sourceType = PileType.CASCADE;
-            si = 1;
-          }
-          else {
-            throw new InputMismatchException("Invalid input");
-          }
-        }
 
-        if (dest.length() == 2) {
-          char dt = dest.charAt(0);
-          char rawDestIndex = dest.charAt(1);
-          di = Character.getNumericValue(rawDestIndex);
+          if (dest.length() == 2) {
+            char dt = dest.charAt(0);
+            char rawDestIndex = dest.charAt(1);
+            di = Character.getNumericValue(rawDestIndex);
 
-          switch (dt) {
-            case 'O':
-              destType = PileType.OPEN;
-              break;
-            case 'C':
+            switch (dt) {
+              case 'O':
+                destType = PileType.OPEN;
+                break;
+              case 'C':
+                destType = PileType.CASCADE;
+                break;
+              case 'F':
+                destType = PileType.FOUNDATION;
+                break;
+              default:
+                throw new IllegalArgumentException("Invalid destination pile type");
+            }
+          } else {
+            if (dest == "Q" || dest == "q") {
+              isToExit = true;
               destType = PileType.CASCADE;
-              break;
-            case 'F':
-              destType = PileType.FOUNDATION;
-              break;
-            default:
-              throw new IllegalArgumentException("Invalid destination pile type");
+              di = 1;
+            } else {
+              throw new InputMismatchException();
+            }
           }
-        }
-        else {
-          if (dest == "Q" || dest == "q") {
-            isToExit = true;
-            destType = PileType.CASCADE;
-            di = 1;
-          }
-          else {
-            throw new InputMismatchException("Invalid input");
-          }
-        }
 
-        if (isToExit) {
-          try {
-            ap.append("Game quit prematurely.");
+          if (isToExit) {
+            try {
+              ap.append("Game quit prematurely.");
+              inProgress = false;
+            } catch (IOException e4) {
+            }
+          } else {
+            try {
+              model.move(sourceType, si - 1, index - 1, destType, di - 1);
+              ap.append(model.getGameState());
+            } catch (IOException e5) {
+            }
           }
-          catch (IOException e4) {}
-        }
-        else {
-          try {
-            model.move(sourceType, si - 1, index - 1, destType, di - 1);
-            ap.append(model.getGameState());
-          }
-          catch (IOException e5) {}
+        } catch (IOException e3) {
         }
       }
-      catch (IOException e3) {}
     }
   }
 
@@ -150,8 +149,8 @@ public class FreeCellController implements IFreeCellController<Card> {
 
     boolean inProgress = true;
     boolean callExit1 = false;
-    boolean callExit2 = false;
-    boolean callExit3 = false;
+    boolean callExit2;
+    boolean callExit3;
     boolean isToExit;
     isToExit = (callExit1 || callExit2 || callExit3);
 
@@ -171,7 +170,7 @@ public class FreeCellController implements IFreeCellController<Card> {
           numCascade = 1;
         } else {
           numCascade = Integer.parseInt(cascade);
-
+          callExit1 = false;
         }
 
         if (open == "Q" || open == "q") {
@@ -200,7 +199,7 @@ public class FreeCellController implements IFreeCellController<Card> {
             shf = false;
             break;
           default:
-            throw new InputMismatchException("Invalid input");
+            throw new InputMismatchException("Invalid input!!");
         }
 
         try {
@@ -221,7 +220,7 @@ public class FreeCellController implements IFreeCellController<Card> {
           }
         }
         catch (InputMismatchException e4) {
-          controller.ap.append("Invalid input");
+          controller.ap.append("Invalid input!\n");
         }
       }
       catch (IOException e3) {}
