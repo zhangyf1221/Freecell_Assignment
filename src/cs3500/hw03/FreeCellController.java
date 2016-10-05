@@ -32,6 +32,15 @@ public class FreeCellController implements IFreeCellController<Card> {
   }
 
 
+  /**
+   * The method starts a new game with given deck, FreeCellModel, number of cascade pile,
+   * number of open pile and decide to shuffle the deck or not.
+   * @param deck list of cards that given to play the game
+   * @param model a freecell game model
+   * @param numCascades number of cascade pile
+   * @param numOpens number of open pile
+   * @param shuffle shuffle the given deck or not
+   */
   public void playGame(List<Card> deck, IFreeCellModel<Card> model, int numCascades,
                        int numOpens, boolean shuffle) {
     model.startGame(deck, numCascades, numOpens, shuffle);
@@ -56,8 +65,9 @@ public class FreeCellController implements IFreeCellController<Card> {
 
 
           String source = s.next();
-          int index = s.nextInt();
+          String rawIndex = s.next();
           String dest = s.next();
+          int index;
           int si;
           int di;
 
@@ -66,59 +76,110 @@ public class FreeCellController implements IFreeCellController<Card> {
 
           boolean isToExit = false;
 
-          if (source.length() == 2) {
-            char st = source.charAt(0);
-            char rawSourceIndex = source.charAt(1);
-            si = Character.getNumericValue(rawSourceIndex);
 
+          char st = source.charAt(0);
+          char rawSourceIndex;// = source.charAt(1);
+          //si = Character.getNumericValue(rawSourceIndex);
+
+          if (st == 'Q' || st == 'q') {
+            isToExit = true;
+            sourceType = PileType.CASCADE;
+            si = 1;
+          }
+          else {
             switch (st) {
               case 'O':
                 sourceType = PileType.OPEN;
+                rawSourceIndex = source.charAt(1);
+                si = Character.getNumericValue(rawSourceIndex);
                 break;
               case 'C':
                 sourceType = PileType.CASCADE;
+                rawSourceIndex = source.charAt(1);
+                si = Character.getNumericValue(rawSourceIndex);
                 break;
               case 'F':
                 sourceType = PileType.FOUNDATION;
+                rawSourceIndex = source.charAt(1);
+                si = Character.getNumericValue(rawSourceIndex);
                 break;
               default:
-                throw new IllegalArgumentException("Invalid source pile type");
-            }
-          } else {
-            if (source == "Q" || source == "q") {
-              isToExit = true;
-              sourceType = PileType.CASCADE;
-              si = 1;
-            } else {
-              throw new InputMismatchException();
+                throw new IllegalArgumentException("Invalid source pile");
             }
           }
 
-          if (dest.length() == 2) {
-            char dt = dest.charAt(0);
-            char rawDestIndex = dest.charAt(1);
-            di = Character.getNumericValue(rawDestIndex);
+          /*switch (st) {
+            case 'O':
+              sourceType = PileType.OPEN;
+              rawSourceIndex = source.charAt(1);
+              si = Character.getNumericValue(rawSourceIndex);
+              break;
+            case 'C':
+              sourceType = PileType.CASCADE;
+              rawSourceIndex = source.charAt(1);
+              si = Character.getNumericValue(rawSourceIndex);
+              break;
+            case 'F':
+              sourceType = PileType.FOUNDATION;
+              rawSourceIndex = source.charAt(1);
+              si = Character.getNumericValue(rawSourceIndex);
+              break;
+            case 'Q':
+              isToExit = true;
+              sourceType = PileType.CASCADE;
+              si = 1;
+              break;
+            case 'q':
+              isToExit = true;
+              sourceType = PileType.CASCADE;
+              si = 1;
+              break;
+            default:
+              throw new IllegalArgumentException("Invalid source pile type");
+          }*/
 
+
+          char dt = dest.charAt(0);
+          char rawDestIndex;// = dest.charAt(1);
+          //di = Character.getNumericValue(rawDestIndex);
+
+          if (dt == 'Q' || dt == 'q') {
+            isToExit = true;
+            destType = PileType.CASCADE;
+            di = 1;
+          }
+          else {
             switch (dt) {
               case 'O':
                 destType = PileType.OPEN;
+                rawDestIndex = dest.charAt(1);
+                di = Character.getNumericValue(rawDestIndex);
                 break;
               case 'C':
                 destType = PileType.CASCADE;
+                rawDestIndex = dest.charAt(1);
+                di = Character.getNumericValue(rawDestIndex);
                 break;
               case 'F':
                 destType = PileType.FOUNDATION;
+                rawDestIndex = dest.charAt(1);
+                di = Character.getNumericValue(rawDestIndex);
                 break;
               default:
-                throw new IllegalArgumentException("Invalid destination pile type");
+                throw new IllegalArgumentException("Invalid destination pile");
             }
-          } else {
-            if (dest == "Q" || dest == "q") {
-              isToExit = true;
-              destType = PileType.CASCADE;
-              di = 1;
-            } else {
-              throw new InputMismatchException();
+          }
+
+          if (rawIndex.equals("Q") || rawIndex.equals("q")) {
+            isToExit = true;
+            index = 1;
+          }
+          else {
+            try {
+              index = Integer.parseInt(rawIndex);
+            }
+            catch (NumberFormatException e9) {
+              throw new IllegalArgumentException("Invalid index");
             }
           }
 
@@ -127,15 +188,24 @@ public class FreeCellController implements IFreeCellController<Card> {
               ap.append("Game quit prematurely.");
               inProgress = false;
             } catch (IOException e4) {
+              inProgress = false;
             }
-          } else {
+          }
+          else {
             try {
               model.move(sourceType, si - 1, index - 1, destType, di - 1);
               ap.append(model.getGameState());
-            } catch (IOException e5) {
+            }
+            catch (IndexOutOfBoundsException e5) {
+              ap.append("Invalid move. Type again");
+            }
+            catch (IllegalArgumentException e6) {
+              ap.append("Invalid move. Type again");
             }
           }
-        } catch (IOException e3) {
+        }
+        catch (IOException e3) {
+          System.out.print(e3);
         }
       }
     }
@@ -148,11 +218,7 @@ public class FreeCellController implements IFreeCellController<Card> {
     Scanner s = new Scanner(controller.rd);
 
     boolean inProgress = true;
-    boolean callExit1;
-    boolean callExit2;
-    boolean callExit3;
-    boolean isToExit;
-
+    boolean isToExit = false;
 
     while (inProgress) {
       try {
@@ -164,61 +230,68 @@ public class FreeCellController implements IFreeCellController<Card> {
         int numCascade;
         int numOpen;
         boolean shf;
-
-        if (cascade == "Q" || cascade == "q") {
-          callExit1 = true;
-          numCascade = 1;
-        } else {
-          numCascade = Integer.parseInt(cascade);
-          callExit1 = false;
+        switch (cascade) {
+          case "Q":
+            isToExit = true;
+            numCascade = 4;
+            break;
+          case "q":
+            isToExit = true;
+            numCascade = 4;
+            break;
+          default:
+            numCascade = Integer.parseInt(cascade);
         }
 
-        if (open == "Q" || open == "q") {
-          callExit2 = true;
-          numOpen = 1;
-        } else {
-          numOpen = Integer.parseInt(open);
-          callExit2 = false;
+        switch (open) {
+          case "Q":
+            isToExit = true;
+            numOpen = 4;
+            break;
+          case "q":
+            isToExit = true;
+            numOpen = 4;
+            break;
+          default:
+            numOpen = Integer.parseInt(open);
         }
 
         switch (shuffle) {
           case "Q":
-            callExit3 = true;
-            inProgress = false;
             shf = false;
+            isToExit = true;
             break;
           case "q":
-            callExit3 = true;
-            inProgress = false;
             shf = false;
+            isToExit = true;
             break;
-          case "true" :
+          case "true":
             shf = true;
-            callExit3 = false;
             break;
-          case "false" :
+          case "false":
             shf = false;
-            callExit3 = false;
             break;
           default:
             throw new InputMismatchException("Invalid input!!");
         }
 
-        isToExit = (callExit1 || callExit2 || callExit3);
 
         try {
           if (isToExit) {
             try {
               controller.ap.append("Game quit prematurely.");
               inProgress = false;
-            } catch (IOException e5) {}
+            } catch (IOException e5) {
+              System.out.print(e5);
+            }
           }
           else {
             try {
               List<Card> deck = model.getDeck();
               controller.playGame(deck, model, numCascade, numOpen, shf);
               controller.ap.append(model.getGameState());
-            } catch (IOException e6) {
+            }
+            catch (IllegalArgumentException e6) {
               controller.ap.append("Could not start game.");
             }
           }
@@ -227,7 +300,9 @@ public class FreeCellController implements IFreeCellController<Card> {
           controller.ap.append("Invalid input!\n");
         }
       }
-      catch (IOException e3) {}
+      catch (IOException e3) {
+        System.out.print(e3);
+      }
     }
   }
 }

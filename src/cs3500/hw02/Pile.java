@@ -39,7 +39,6 @@ public class Pile<Card> {
   /**
    * Add the card to the last position of pile.
    * @param card card to be added
-   * @return list of card after adding the given card
    */
   public void add(Card card) {
     pile.add(card);
@@ -48,7 +47,6 @@ public class Pile<Card> {
   /**
    * Remove the card to the last position of pile.
    * @param card card to be removed
-   * @return list of card after removing the given card
    */
   public void remove(Card card) {
     pile.remove(card);

@@ -1,4 +1,5 @@
 package cs3500.hw03;
+
 import java.util.List;
 import cs3500.hw02.IFreeCellModel;
 

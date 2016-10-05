@@ -25,4 +25,4 @@ public enum PileType {
    * fill up all the foundation piles.
    */
   FOUNDATION
-};
+}
