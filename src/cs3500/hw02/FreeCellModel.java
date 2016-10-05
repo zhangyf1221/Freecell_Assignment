@@ -111,6 +111,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
    * @param destPileNumber            the pile number of the given type, starting at 0
    * @throws IllegalArgumentException if the move is not possible
    */
+  //TODO: Moving a non last card should throw exception & fixing move a card to foundation pile
   public void move(PileType sourceType, int sourcePileNumber, int cardIndex, PileType destType,
                    int destPileNumber) {
     switch (sourceType) {
