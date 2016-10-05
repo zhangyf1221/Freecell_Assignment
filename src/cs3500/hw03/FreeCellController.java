@@ -53,6 +53,9 @@ public class FreeCellController implements IFreeCellController<Card> {
     run();
   }
 
+  /**
+   * Helper method for playGame. Get input from scanner and output move.
+   */
   private void run() {
     Scanner s = new Scanner(rd);
     boolean inProgress = true;
@@ -181,6 +184,11 @@ public class FreeCellController implements IFreeCellController<Card> {
     }
   }
 
+  /**
+   * Main method of FreeCell Controller.
+   * @param args list of arguments
+   * @throws IOException
+   */
   public static void main(String[] args) throws IOException {
     FreeCellController controller =
             new FreeCellController(new InputStreamReader(System.in), System.out);
