@@ -181,7 +181,7 @@ public class FreeCellController implements IFreeCellController<Card> {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     FreeCellController controller =
             new FreeCellController(new InputStreamReader(System.in), System.out);
     FreeCellModel model = new FreeCellModel();
@@ -200,6 +200,7 @@ public class FreeCellController implements IFreeCellController<Card> {
         int numCascade;
         int numOpen;
         boolean shf;
+
         switch (cascade) {
           case "Q":
             isToExit = true;
@@ -245,9 +246,7 @@ public class FreeCellController implements IFreeCellController<Card> {
             throw new InputMismatchException("Invalid input!!");
         }
 
-
-        try {
-          if (isToExit) {
+        if (isToExit) {
             try {
               controller.ap.append("Game quit prematurely.");
               inProgress = false;
@@ -265,13 +264,15 @@ public class FreeCellController implements IFreeCellController<Card> {
               controller.ap.append("Could not start game.");
             }
           }
-        }
-        catch (InputMismatchException e4) {
-          controller.ap.append("Invalid input!\n");
-        }
       }
       catch (IOException e3) {
         System.out.print(e3);
+      }
+      catch (InputMismatchException e00) {
+        controller.ap.append("Invalid input. Type again.\n");
+      }
+      catch (NumberFormatException e01) {
+        controller.ap.append("Invalid input. Type again.\n");
       }
     }
   }
