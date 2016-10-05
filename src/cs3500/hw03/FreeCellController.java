@@ -78,8 +78,7 @@ public class FreeCellController implements IFreeCellController<Card> {
 
 
           char st = source.charAt(0);
-          char rawSourceIndex;// = source.charAt(1);
-          //si = Character.getNumericValue(rawSourceIndex);
+          char rawSourceIndex;
 
           if (st == 'Q' || st == 'q') {
             isToExit = true;
@@ -108,40 +107,10 @@ public class FreeCellController implements IFreeCellController<Card> {
             }
           }
 
-          /*switch (st) {
-            case 'O':
-              sourceType = PileType.OPEN;
-              rawSourceIndex = source.charAt(1);
-              si = Character.getNumericValue(rawSourceIndex);
-              break;
-            case 'C':
-              sourceType = PileType.CASCADE;
-              rawSourceIndex = source.charAt(1);
-              si = Character.getNumericValue(rawSourceIndex);
-              break;
-            case 'F':
-              sourceType = PileType.FOUNDATION;
-              rawSourceIndex = source.charAt(1);
-              si = Character.getNumericValue(rawSourceIndex);
-              break;
-            case 'Q':
-              isToExit = true;
-              sourceType = PileType.CASCADE;
-              si = 1;
-              break;
-            case 'q':
-              isToExit = true;
-              sourceType = PileType.CASCADE;
-              si = 1;
-              break;
-            default:
-              throw new IllegalArgumentException("Invalid source pile type");
-          }*/
-
 
           char dt = dest.charAt(0);
-          char rawDestIndex;// = dest.charAt(1);
-          //di = Character.getNumericValue(rawDestIndex);
+          char rawDestIndex;
+
 
           if (dt == 'Q' || dt == 'q') {
             isToExit = true;
@@ -187,6 +156,7 @@ public class FreeCellController implements IFreeCellController<Card> {
             try {
               ap.append("Game quit prematurely.");
               inProgress = false;
+              System.exit(1);
             } catch (IOException e4) {
               inProgress = false;
             }
