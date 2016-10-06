@@ -169,9 +169,6 @@ public class FreeCellController implements IFreeCellController<Card> {
               model.move(sourceType, si - 1, index - 1, destType, di - 1);
               ap.append(model.getGameState());
             }
-            catch (IndexOutOfBoundsException e5) {
-              ap.append("Invalid move. Type again");
-            }
             catch (IllegalArgumentException e6) {
               ap.append("Invalid move. Type again");
             }

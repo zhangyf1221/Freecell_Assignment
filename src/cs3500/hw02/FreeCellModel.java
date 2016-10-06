@@ -36,6 +36,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
   /**
    * Return a valid and complete deck of cards for a game of Freecell. There is
    * no restriction imposed on the ordering of these cards in the deck.
+   *
    * @return the deck of cards as a list
    */
 
@@ -51,7 +52,6 @@ public class FreeCellModel implements IFreeCellModel<Card> {
     }
     return result;
   }
-
 
 
   @Override
@@ -78,22 +78,21 @@ public class FreeCellModel implements IFreeCellModel<Card> {
         int whichPile = i % numCascadePiles;
         cascadePileList.get(whichPile).add(deck.get(i));
       }
-    }
-    else {
+    } else {
       throw new IllegalArgumentException("Not a valid game");
     }
   }
 
   /**
    * Check the given deck is valid or not.
+   *
    * @param deck list of cards
    * @return true is the deck is valid, false if not
    */
   public boolean validDeck(List<Card> deck) {
     if (deck.size() != 52) {
       return false;
-    }
-    else {
+    } else {
       Set<Card> deckSet = new HashSet<>(deck);
 
       return deckSet.size() == 52;
@@ -103,129 +102,130 @@ public class FreeCellModel implements IFreeCellModel<Card> {
   /**
    * Move a card from the given source pile to the given destination pile, if
    * the move is valid.
-   * @param sourceType                the type of the source pile (see {@link PileType})
-   * @param sourcePileNumber          the pile number of the given type, starting at 0
-   * @param cardIndex                 the index of the card to be moved from the source
-   *                                  pile, starting at 0
-   * @param destType                  the type of the destination pile (see {@link PileType})
-   * @param destPileNumber            the pile number of the given type, starting at 0
+   *
+   * @param sourceType       the type of the source pile (see {@link PileType})
+   * @param sourcePileNumber the pile number of the given type, starting at 0
+   * @param cardIndex        the index of the card to be moved from the source pile, starting at 0
+   * @param destType         the type of the destination pile (see {@link PileType})
+   * @param destPileNumber   the pile number of the given type, starting at 0
    * @throws IllegalArgumentException if the move is not possible
    */
-  //TODO: Moving a non last card should throw exception & fixing move a card to foundation pile
   public void move(PileType sourceType, int sourcePileNumber, int cardIndex, PileType destType,
                    int destPileNumber) {
     switch (sourceType) {
-      case OPEN :
-        switch (destType) {
-          case OPEN:
-            if (openPileList.get(destPileNumber).isEmpty()) {
-              openPileList.get(destPileNumber).
-                      add(openPileList.get(sourcePileNumber).getCard(cardIndex));
-              openPileList.get(sourcePileNumber).
-                      remove(openPileList.get(sourcePileNumber).getCard(cardIndex));
-              break;
-            }
-            else {
-              throw new IllegalArgumentException("Cannot move a card to a not empty open pile");
-            }
+      case OPEN:
+        Pile<Card> po = openPileList.get(sourcePileNumber);
+        Card oc = po.getCard(cardIndex);
 
-          case FOUNDATION:
-            Pile<Card> p1 = openPileList.get(sourcePileNumber);
-            Card c1 = p1.getCard(cardIndex);
-            Pile<Card> p2 = foundationPileList.get(destPileNumber);
-            Card c2 = p2.lastCard();
+        if (po.isLastCard(cardIndex)) {
+          switch (destType) {
+            case OPEN:
+              if (po.isEmpty()) {
+                openPileList.get(destPileNumber).add(oc);
+                po.remove(oc);
+                break;
+              } else {
+                throw new IllegalArgumentException("Cannot move a card to a not empty open pile");
+              }
 
-            if (p2.isEmpty()) {
-              if (c1.cardValue() == 1) {
-                p2.add(c1);
-                p1.remove(c1);
+
+            case FOUNDATION:
+              Pile<Card> p2 = foundationPileList.get(destPileNumber);
+              if (p2.isEmpty()) {
+                if (oc.cardValue() == 1) {
+                  p2.add(oc);
+                  po.remove(oc);
+                  break;
+                } else {
+                  throw new IllegalArgumentException("Only Ace can be placed " +
+                          "into a empty foundation pile");
+                }
+              } else {
+                if (p2.lastCard().nextCard(oc)) {
+                  p2.add(oc);
+                  po.remove(oc);
+                  break;
+                } else {
+                  throw new IllegalArgumentException("Invalid move");
+                }
+              }
+
+            case CASCADE:
+              Pile<Card> pc = cascadePileList.get(destPileNumber);
+              Card cc = pc.lastCard();
+              Pile<Card> p3 = openPileList.get(sourcePileNumber);
+              Card c3 = p3.getCard(cardIndex);
+
+              if (c3.cardValue() < cc.cardValue()) {
+                pc.add(c3);
+                p3.remove(c3);
                 break;
-              }
-              else {
-                throw new IllegalArgumentException("Only Ace can be placed " +
-                        "into a empty foundation pile");
-              }
-            }
-            else {
-              if (c2.nextCard(c1)) {
-                p2.add(c1);
-                p1.remove(c1);
-                break;
-              }
-              else {
+              } else {
                 throw new IllegalArgumentException("Invalid move");
               }
-            }
 
-          case CASCADE:
-            Pile<Card> pc = cascadePileList.get(destPileNumber);
-            Card cc = pc.lastCard();
-            Pile<Card> p3 = openPileList.get(sourcePileNumber);
-            Card c3 = p3.getCard(cardIndex);
-
-            if (c3.cardValue() < cc.cardValue()) {
-              pc.add(c3);
-              p3.remove(c3);
-              break;
-            }
-            else {
+            default:
               throw new IllegalArgumentException("Invalid move");
-            }
-
-          default:
-            throw new IllegalArgumentException("Invalid move");
+          }
+        } else {
+          throw new IllegalArgumentException("Invalid move");
         }
+        break;
 
       case CASCADE:
         Pile<Card> casp = cascadePileList.get(sourcePileNumber);
         Card casc = casp.getCard(cardIndex);
 
-        switch (destType) {
-
-          case OPEN:
-            if (openPileList.get(destPileNumber).isEmpty()) {
-              openPileList.get(destPileNumber).add(casc);
-              casp.remove(casc);
-              break;
-            }
-            else {
-              throw new IllegalArgumentException("Open pile can only keep 1 card");
-            }
-
-          case FOUNDATION:
-            Pile<Card> fp = foundationPileList.get(destPileNumber);
-            Card lfc = fp.lastCard();
-            if (fp.isEmpty()) {
-              if (casc.cardValue() == 1) {
-                fp.add(casc);
+        if (casp.isLastCard(cardIndex)) {
+          switch (destType) {
+            case OPEN:
+              if (openPileList.get(destPileNumber).isEmpty()) {
+                openPileList.get(destPileNumber).add(casc);
                 casp.remove(casc);
                 break;
+              } else {
+                throw new IllegalArgumentException("Open pile can only keep 1 card");
               }
-              else {
-                throw new IllegalArgumentException("Only Ace can be placed " +
-                        "into a empty foundation pile");
+
+
+            case FOUNDATION:
+              Pile<Card> fp = foundationPileList.get(destPileNumber);
+
+              if (fp.isEmpty()) {
+                if (casc.cardValue() == 1) {
+                  fp.add(casc);
+                  casp.remove(casc);
+                  break;
+                } else {
+                  throw new IllegalArgumentException("Only Ace can be placed " +
+                          "into a empty foundation pile");
+                }
+              } else {
+                if (fp.lastCard().nextCard(casc)) {
+                  fp.add(casc);
+                  casp.remove(casc);
+                  break;
+                } else {
+                  throw new IllegalArgumentException("Invalid move");
+                }
               }
-            }
-            else {
-              if (lfc.nextCard(casc)) {
-                fp.add(casc);
+
+            case CASCADE:
+              Pile<Card> cp = cascadePileList.get(destPileNumber);
+              Card cc = cp.lastCard();
+              if (casc.cardValue() < cc.cardValue()) {
+                cp.add(casc);
                 casp.remove(casc);
                 break;
-              }
-              else {
+              } else {
                 throw new IllegalArgumentException("Invalid move");
               }
-            }
 
-
-          case CASCADE:
-            Pile<Card> cp = cascadePileList.get(destPileNumber);
-            cp.add(casc);
-            casp.remove(casc);
-            break;
-
-          default:
-            throw new IllegalArgumentException("Invalid move");
+            default:
+              throw new IllegalArgumentException("Invalid move");
+          }
+        } else {
+          throw new IllegalArgumentException("Invalid move");
         }
         break;
 
@@ -239,6 +239,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
   /**
    * Signal if the game is over or not.
+   *
    * @return true if game is over, false otherwise
    */
   public boolean isGameOver() {
@@ -276,8 +277,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
       result += String.format("F%d: ", i);
       if (foundationPileList.get(i - 1).isEmpty()) {
         result += "\n";
-      }
-      else {
+      } else {
         for (int j = 0; j < foundationPileList.get(i - 1).size(); j++) {
           Pile<Card> p = foundationPileList.get(i - 1);
           Card c = p.get(j);
@@ -294,8 +294,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
       result += String.format("O%d: ", i);
       if (openPileList.get(i - 1).isEmpty()) {
         result += "\n";
-      }
-      else {
+      } else {
         for (int j = 0; j < openPileList.get(i - 1).size(); j++) {
           Pile<Card> p = openPileList.get(i - 1);
           Card c = p.get(j);

@@ -53,7 +53,7 @@ public class Pile<Card> {
   }
 
   /**
-   * Get the from the last position of a pile.
+   * Get the card from the last position of a pile.
    * @return card at the last position of a pile
    */
   public Card lastCard() {
@@ -70,6 +70,15 @@ public class Pile<Card> {
 
   public Card get(int i) {
     return pile.get(i);
+  }
+
+  /**
+   * check the card at given index is the last card in the pile or not.
+   * @param i
+   * @return true if the card is the last card in pile, false if not
+   */
+  public boolean isLastCard(int i) {
+    return (pile.size() == (i + 1));
   }
 
 }
