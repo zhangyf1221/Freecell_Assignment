@@ -61,7 +61,11 @@ public class FreeCellModel implements IFreeCellModel<Card> {
       Collections.shuffle(deck);
     }
 
-    if (this.validDeck(deck) && numCascadePiles >= 4 && numOpenPiles >= 1) {
+    if (numCascadePiles == 0 || numOpenPiles == 0) {
+      throw new IllegalArgumentException("Can't be zero");
+    }
+
+    if (this.validDeck(deck)) {
       // Set up cascade pile list
       cascadePileList = new ArrayList<Pile>();
       for (int i = 0; i < numCascadePiles; i++) {
@@ -273,6 +277,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
    */
   public String getGameState() {
     String result = "";
+
     for (int i = 1; i < foundationPileList.size() + 1; i++) {
       result += String.format("F%d: ", i);
       if (foundationPileList.get(i - 1).isEmpty()) {
@@ -332,4 +337,5 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
     return result;
   }
+
 }

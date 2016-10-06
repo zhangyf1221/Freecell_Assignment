@@ -10,7 +10,7 @@ public interface IFreeCellModel<K> {
 
   /**
    * Return a valid and complete deck of cards for a game of Freecell. There is
-   * no restriction imposed on the ordering of these cards in the deck
+   * no restriction imposed on the ordering of these cards in the deck.
    *
    * @return the deck of cards as a list
    */
@@ -19,14 +19,12 @@ public interface IFreeCellModel<K> {
   /**
    * Deal a new game of Freecell with the given deck, with or without shuffling
    * it first. This method first verifies that the deck is valid.
-   *
    * It deals the deck among the cascade piles in round-robin fashion. Thus if
    * there are 4 cascade piles, the 1st pile will get cards 0, 4, 8, ..., the
    * 2nd pile will get cards 1, 5, 9, ..., the 3rd pile will get cards 2, 6, 10,
    * ... and the 4th pile will get cards 3, 7, 11, ....
-   *
    * Depending on the number of cascade piles, they may have a different number
-   * of cards
+   * of cards.
    *
    * @param numCascadePiles number of cascade piles
    * @param numOpenPiles    number of open piles
@@ -39,14 +37,13 @@ public interface IFreeCellModel<K> {
 
   /**
    * Move a card from the given source pile to the given destination pile, if
-   * the move is valid
+   * the move is valid.
    *
-   * @param sourceType                the type of the source pile (see {@link PileType})
-   * @param sourcePileNumber          the pile number of the given type, starting at 0
-   * @param cardIndex                 the index of the card to be moved from the source
-   *                                  pile, starting at 0
-   * @param destType                  the type of the destination pile (see {@link PileType})
-   * @param destPileNumber            the pile number of the given type, starting at 0
+   * @param sourceType       the type of the source pile (see {@link PileType})
+   * @param sourcePileNumber the pile number of the given type, starting at 0
+   * @param cardIndex        the index of the card to be moved from the source pile, starting at 0
+   * @param destType         the type of the destination pile (see {@link PileType})
+   * @param destPileNumber   the pile number of the given type, starting at 0
    * @throws IllegalArgumentException if the move is not possible
    */
   void move(PileType sourceType, int sourcePileNumber, int cardIndex, PileType destType, int destPileNumber)
@@ -54,6 +51,7 @@ public interface IFreeCellModel<K> {
 
   /**
    * Signal if the game is over or not.
+   *
    * @return true if game is over, false otherwise
    */
   boolean isGameOver();
@@ -61,7 +59,6 @@ public interface IFreeCellModel<K> {
   /**
    * Return the present state of the game as a string. The string is formatted
    * as follows:
-   *
    * <pre>
    * F1:[b]f11,[b]f12,[b],...,[b]f1n1[n] (Cards in foundation pile 1 in order)
    * F2:[b]f21,[b]f22,[b],...,[b]f2n2[n] (Cards in foundation pile 2 in order)

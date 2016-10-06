@@ -74,7 +74,7 @@ public class Pile<Card> {
 
   /**
    * check the card at given index is the last card in the pile or not.
-   * @param i
+   * @param i index of card
    * @return true if the card is the last card in pile, false if not
    */
   public boolean isLastCard(int i) {
