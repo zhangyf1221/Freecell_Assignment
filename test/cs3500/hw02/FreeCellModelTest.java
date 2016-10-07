@@ -95,8 +95,6 @@ public class FreeCellModelTest {
   }
 
 
-
-
   @Test
   public void move() throws Exception {
     initGame1();
@@ -113,14 +111,23 @@ public class FreeCellModelTest {
     assertNotEquals(gameState1, model2.getGameState());
   }
 
-  private String gameState1 = "F1: " +
-          "\nF2: " +
-          "\nF3: " +
-          "\nF4: " +
-          "\nO1: " +
-          "\nO2: " +
-          "\nO3: " +
-          "\nO4: " +
+  @Test
+  public void gameOverTest() throws Exception {
+    initGame2();
+    initGame3();
+    assertEquals(gameState3, model3.getGameState());
+    assertEquals(false, model2.isGameOver());
+    assertEquals(true, model3.isGameOver());
+  }
+
+  private String gameState1 = "F1:" +
+          "\nF2:" +
+          "\nF3:" +
+          "\nF4:" +
+          "\nO1:" +
+          "\nO2:" +
+          "\nO3:" +
+          "\nO4:" +
           "\nC1: A♦, 3♦, 5♦, 7♦, 9♦, J♦, K♦" +
           "\nC2: A♣, 3♣, 5♣, 7♣, 9♣, J♣, K♣" +
           "\nC3: A♥, 3♥, 5♥, 7♥, 9♥, J♥, K♥" +
@@ -130,14 +137,14 @@ public class FreeCellModelTest {
           "\nC7: 2♥, 4♥, 6♥, 8♥, 10♥, Q♥" +
           "\nC8: 2♠, 4♠, 6♠, 8♠, 10♠, Q♠";
 
-  private String gameState2 = "F1: " +
-          "\nF2: " +
-          "\nF3: " +
-          "\nF4: " +
+  private String gameState2 = "F1:" +
+          "\nF2:" +
+          "\nF3:" +
+          "\nF4:" +
           "\nO1: K♦" +
-          "\nO2: " +
-          "\nO3: " +
-          "\nO4: " +
+          "\nO2:" +
+          "\nO3:" +
+          "\nO4:" +
           "\nC1: A♦, 3♦, 5♦, 7♦, 9♦, J♦" +
           "\nC2: A♣, 3♣, 5♣, 7♣, 9♣, J♣, K♣" +
           "\nC3: A♥, 3♥, 5♥, 7♥, 9♥, J♥, K♥" +
@@ -146,5 +153,117 @@ public class FreeCellModelTest {
           "\nC6: 2♣, 4♣, 6♣, 8♣, 10♣, Q♣" +
           "\nC7: 2♥, 4♥, 6♥, 8♥, 10♥, Q♥" +
           "\nC8: 2♠, 4♠, 6♠, 8♠, 10♠, Q♠";
+
+  private String gameState3 = "F1: A♦, 2♦, 3♦, 4♦, 5♦, 6♦, 7♦, 8♦, 9♦, 10♦, J♦, Q♦, K♦" +
+          "\nF2: A♣, 2♣, 3♣, 4♣, 5♣, 6♣, 7♣, 8♣, 9♣, 10♣, J♣, Q♣, K♣" +
+          "\nF3: A♥, 2♥, 3♥, 4♥, 5♥, 6♥, 7♥, 8♥, 9♥, 10♥, J♥, Q♥, K♥" +
+          "\nF4: A♠, 2♠, 3♠, 4♠, 5♠, 6♠, 7♠, 8♠, 9♠, 10♠, J♠, Q♠, K♠" +
+          "\nO1:" +
+          "\nC1:";
+
+  private FreeCellModel model3 = new FreeCellModel();
+  private Pile<Card> f1 = new Pile<>();
+  private Pile<Card> f2 = new Pile<>();
+  private Pile<Card> f3 = new Pile<>();
+  private Pile<Card> f4 = new Pile<>();
+  private Pile<Card> o1 = new Pile<>();
+  private Pile<Card> c1 = new Pile<>();
+
+  private void initF1() {
+    f1.add(new Card(Rank.Ace, Suit.Diamond));
+    f1.add(new Card(Rank.Two, Suit.Diamond));
+    f1.add(new Card(Rank.Three, Suit.Diamond));
+    f1.add(new Card(Rank.Four, Suit.Diamond));
+    f1.add(new Card(Rank.Five, Suit.Diamond));
+    f1.add(new Card(Rank.Six, Suit.Diamond));
+    f1.add(new Card(Rank.Seven, Suit.Diamond));
+    f1.add(new Card(Rank.Eight, Suit.Diamond));
+    f1.add(new Card(Rank.Nine, Suit.Diamond));
+    f1.add(new Card(Rank.Ten, Suit.Diamond));
+    f1.add(new Card(Rank.Jack, Suit.Diamond));
+    f1.add(new Card(Rank.Queen, Suit.Diamond));
+    f1.add(new Card(Rank.King, Suit.Diamond));
+  }
+
+  private void initF2() {
+    f2.add(new Card(Rank.Ace, Suit.Club));
+    f2.add(new Card(Rank.Two, Suit.Club));
+    f2.add(new Card(Rank.Three, Suit.Club));
+    f2.add(new Card(Rank.Four, Suit.Club));
+    f2.add(new Card(Rank.Five, Suit.Club));
+    f2.add(new Card(Rank.Six, Suit.Club));
+    f2.add(new Card(Rank.Seven, Suit.Club));
+    f2.add(new Card(Rank.Eight, Suit.Club));
+    f2.add(new Card(Rank.Nine, Suit.Club));
+    f2.add(new Card(Rank.Ten, Suit.Club));
+    f2.add(new Card(Rank.Jack, Suit.Club));
+    f2.add(new Card(Rank.Queen, Suit.Club));
+    f2.add(new Card(Rank.King, Suit.Club));
+  }
+
+  private void initF3() {
+    f3.add(new Card(Rank.Ace, Suit.Heart));
+    f3.add(new Card(Rank.Two, Suit.Heart));
+    f3.add(new Card(Rank.Three, Suit.Heart));
+    f3.add(new Card(Rank.Four, Suit.Heart));
+    f3.add(new Card(Rank.Five, Suit.Heart));
+    f3.add(new Card(Rank.Six, Suit.Heart));
+    f3.add(new Card(Rank.Seven, Suit.Heart));
+    f3.add(new Card(Rank.Eight, Suit.Heart));
+    f3.add(new Card(Rank.Nine, Suit.Heart));
+    f3.add(new Card(Rank.Ten, Suit.Heart));
+    f3.add(new Card(Rank.Jack, Suit.Heart));
+    f3.add(new Card(Rank.Queen, Suit.Heart));
+    f3.add(new Card(Rank.King, Suit.Heart));
+  }
+
+  private void initF4() {
+    f4.add(new Card(Rank.Ace, Suit.Spade));
+    f4.add(new Card(Rank.Two, Suit.Spade));
+    f4.add(new Card(Rank.Three, Suit.Spade));
+    f4.add(new Card(Rank.Four, Suit.Spade));
+    f4.add(new Card(Rank.Five, Suit.Spade));
+    f4.add(new Card(Rank.Six, Suit.Spade));
+    f4.add(new Card(Rank.Seven, Suit.Spade));
+    f4.add(new Card(Rank.Eight, Suit.Spade));
+    f4.add(new Card(Rank.Nine, Suit.Spade));
+    f4.add(new Card(Rank.Ten, Suit.Spade));
+    f4.add(new Card(Rank.Jack, Suit.Spade));
+    f4.add(new Card(Rank.Queen, Suit.Spade));
+    f4.add(new Card(Rank.King, Suit.Spade));
+  }
+
+  private List<Pile> fPL = new ArrayList<>();
+  private List<Pile> oPL = new ArrayList<>();
+  private List<Pile> cPL = new ArrayList<>();
+
+  private void initFP() {
+    initF1();
+    initF2();
+    initF3();
+    initF4();
+    fPL.add(f1);
+    fPL.add(f2);
+    fPL.add(f3);
+    fPL.add(f4);
+  }
+
+  private void initOP() {
+    oPL.add(o1);
+  }
+
+  private void initCP() {
+    cPL.add(c1);
+  }
+
+  private void initGame3() {
+    initFP();
+    initOP();
+    initCP();
+    model3.foundationPileList = fPL;
+    model3.openPileList = oPL;
+    model3.cascadePileList = cPL;
+  }
+
 
 }
