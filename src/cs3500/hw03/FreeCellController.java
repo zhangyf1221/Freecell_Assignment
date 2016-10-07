@@ -9,7 +9,6 @@ import cs3500.hw02.PileType;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -221,8 +220,12 @@ public class FreeCellController implements IFreeCellController<Card> {
     FreeCellModel model = new FreeCellModel();
     Scanner s = new Scanner(controller.rd);
 
-    if (controller.rd == null || controller.ap == null || model == null) {
+    if (controller.rd == null || controller.ap == null) {
       throw new IllegalStateException("Readable or appendable can't be null");
+    }
+
+    if (model == null) {
+      throw new IllegalArgumentException("Model can't be empty");
     }
 
     boolean isToExit = false;
