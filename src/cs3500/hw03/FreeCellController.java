@@ -3,20 +3,16 @@ package cs3500.hw03;
 import java.util.List;
 
 import cs3500.hw02.Card;
-import cs3500.hw02.FreeCellModel;
+//import cs3500.hw02.FreeCellModel;
 import cs3500.hw02.IFreeCellModel;
 import cs3500.hw02.PileType;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
+//import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Scanner;
 
 
-/*todolist
-TODO: catch nullPointerException at empty deck & invalid deck
-TODO: invalid card index input, ask card index again only
-TODO: TEST
- */
 
 /**
  * Created by jowenfan on 9/29/16.
@@ -33,6 +29,13 @@ public class FreeCellController implements IFreeCellController<Card> {
    * Constructor of FreeCellController.
    */
   public FreeCellController(Readable rd, Appendable ap) {
+    try {
+      Objects.requireNonNull(rd);
+      Objects.requireNonNull(ap);
+    } catch (NullPointerException e) {
+      throw new IllegalStateException("Readable or appendable can't be empty");
+    }
+
     this.rd = rd;
     this.ap = ap;
   }
@@ -51,10 +54,13 @@ public class FreeCellController implements IFreeCellController<Card> {
   public void playGame(List<Card> deck, IFreeCellModel<Card> model, int numCascades,
                        int numOpens, boolean shuffle) {
 
-    if (deck.isEmpty()) {
-      throw new IllegalStateException("Cannot start with an empty deck");
+    if (deck == null) {
+      throw new IllegalArgumentException("Deck can't be null");
     }
 
+    if (model == null) {
+      throw new IllegalArgumentException("Model can't be empty");
+    }
 
     try {
       model.startGame(deck, numCascades, numOpens, shuffle);
@@ -64,9 +70,16 @@ public class FreeCellController implements IFreeCellController<Card> {
       } catch (IOException e0) {
         System.out.print(e0);
       }
+      try {
+        run();
+      } catch (IllegalArgumentException e1) {
+        System.out.print("hahah");
+      }
+
     } catch (IllegalStateException e4) {
       try {
-        ap.append("Could not start game.");
+        ap.append("Could not start game.");//nullPointerException
+        inProgress = false;
       } catch (IOException e5) {
         System.out.print(e5);
       }
@@ -99,8 +112,7 @@ public class FreeCellController implements IFreeCellController<Card> {
                 "CardIndex, DestType + Index)\n");
 
         String source = s.next();
-        String rawIndex = s.next();
-        String dest = s.next();
+
         int index;
         int si;
         int di;
@@ -149,57 +161,71 @@ public class FreeCellController implements IFreeCellController<Card> {
           }
         }
 
-
-        String dt = dest.substring(0, 1);
-        String rawDestIndex;
-
-
-        if (dt.equals("Q") || dt.equals("q")) {
-          isToExit = true;
-          destType = PileType.OPEN;
-          di = 1;
+        if (isToExit) {
+          inProgress = false;
+          index = 1;
         } else {
-          switch (dt) {
-            case "O":
-              destType = PileType.OPEN;
-              rawDestIndex = dest.substring(1, dest.length());
-              try {
-                di = Integer.parseInt(rawDestIndex);
-              } catch (NumberFormatException e0) {
-                throw new IllegalArgumentException("Invalid destination pile index input");
-              }
-              break;
-            case "C":
-              destType = PileType.CASCADE;
-              rawDestIndex = dest.substring(1, dest.length());
-              try {
-                di = Integer.parseInt(rawDestIndex);
-              } catch (NumberFormatException e0) {
-                throw new IllegalArgumentException("Invalid destination pile index input");
-              }
-              break;
-            case "F":
-              destType = PileType.FOUNDATION;
-              rawDestIndex = dest.substring(1, dest.length());
-              try {
-                di = Integer.parseInt(rawDestIndex);
-              } catch (NumberFormatException e0) {
-                throw new IllegalArgumentException("Invalid destination pile index input");
-              }
-              break;
-            default:
-              throw new IllegalArgumentException("Invalid destination pile");
+          String rawIndex = s.next();
+
+          if (rawIndex.substring(0, 1).equals("Q") || rawIndex.substring(0, 1).equals("q")) {
+            isToExit = true;
+            index = 1;
+          } else {
+            try {
+              index = Integer.parseInt(rawIndex);
+            } catch (NumberFormatException e9) {
+              throw new IllegalArgumentException("Invalid card index");
+            }
           }
         }
 
-        if (rawIndex.substring(0, 1).equals("Q") || rawIndex.substring(0, 1).equals("q")) {
-          isToExit = true;
-          index = 1;
+        if (isToExit) {
+          inProgress = false;
+          destType = PileType.OPEN;
+          di = 1;
         } else {
-          try {
-            index = Integer.parseInt(rawIndex);
-          } catch (NumberFormatException e9) {
-            throw new IllegalArgumentException("Invalid card index");
+
+          String dest = s.next();
+          String dt = dest.substring(0, 1);
+          String rawDestIndex;
+
+
+          if (dt.equals("Q") || dt.equals("q")) {
+            isToExit = true;
+            destType = PileType.OPEN;
+            di = 1;
+          } else {
+            switch (dt) {
+              case "O":
+                destType = PileType.OPEN;
+                rawDestIndex = dest.substring(1, dest.length());
+                try {
+                  di = Integer.parseInt(rawDestIndex);
+                } catch (NumberFormatException e0) {
+                  throw new IllegalArgumentException("Invalid destination pile index input");
+                }
+                break;
+              case "C":
+                destType = PileType.CASCADE;
+                rawDestIndex = dest.substring(1, dest.length());
+                try {
+                  di = Integer.parseInt(rawDestIndex);
+                } catch (NumberFormatException e0) {
+                  throw new IllegalArgumentException("Invalid destination pile index input");
+                }
+                break;
+              case "F":
+                destType = PileType.FOUNDATION;
+                rawDestIndex = dest.substring(1, dest.length());
+                try {
+                  di = Integer.parseInt(rawDestIndex);
+                } catch (NumberFormatException e0) {
+                  throw new IllegalArgumentException("Invalid destination pile index input");
+                }
+                break;
+              default:
+                throw new IllegalArgumentException("Invalid destination pile");
+            }
           }
         }
 
@@ -233,12 +259,12 @@ public class FreeCellController implements IFreeCellController<Card> {
   }
 
 
-  /**
+/*  *//**
    * Main method of FreeCell Controller.
    *
    * @param args list of arguments
    * @throws IOException IOException
-   */
+   *//*
   public static void main(String[] args) throws IOException {
     FreeCellController controller =
             new FreeCellController(new InputStreamReader(System.in), System.out);
@@ -255,17 +281,14 @@ public class FreeCellController implements IFreeCellController<Card> {
 
     boolean isToExit = false;
 
+
     while (controller.inProgress) {
       try {
-        controller.ap.append("\nEnter number of cascade pile, number of open pile " +
+        controller.ap.append("Enter number of cascade pile, number of open pile " +
                 "and shuffle or not");
 
         String cascade = s.next();
-        String open = s.next();
-        String shuffle = s.next();
         int numCascade;
-        int numOpen;
-        boolean shf;
 
         switch (cascade) {
           case "Q":
@@ -280,36 +303,57 @@ public class FreeCellController implements IFreeCellController<Card> {
             numCascade = Integer.parseInt(cascade);
         }
 
-        switch (open) {
-          case "Q":
-            isToExit = true;
-            numOpen = 4;
-            break;
-          case "q":
-            isToExit = true;
-            numOpen = 4;
-            break;
-          default:
-            numOpen = Integer.parseInt(open);
+
+        int numOpen;
+
+        if (isToExit) {
+          numOpen = 4;
+          controller.inProgress = false;
+        } else {
+          String open = s.next();
+
+          switch (open) {
+            case "Q":
+              isToExit = true;
+              numOpen = 4;
+              break;
+            case "q":
+              isToExit = true;
+              numOpen = 4;
+              break;
+            default:
+              numOpen = Integer.parseInt(open);
+          }
+
         }
 
-        switch (shuffle) {
-          case "Q":
-            shf = false;
-            isToExit = true;
-            break;
-          case "q":
-            shf = false;
-            isToExit = true;
-            break;
-          case "true":
-            shf = true;
-            break;
-          case "false":
-            shf = false;
-            break;
-          default:
-            throw new IllegalArgumentException("Invalid input");
+        boolean shf;
+        if (isToExit) {
+          shf = false;
+          controller.inProgress = false;
+        } else {
+          String shuffle = s.next();
+
+
+          switch (shuffle) {
+            case "Q":
+              shf = false;
+              isToExit = true;
+              break;
+            case "q":
+              shf = false;
+              isToExit = true;
+              break;
+            case "true":
+              shf = true;
+              break;
+            case "false":
+              shf = false;
+              break;
+            default:
+              throw new IllegalArgumentException("Invalid input");
+          }
+
         }
 
         if (isToExit) {
@@ -323,13 +367,6 @@ public class FreeCellController implements IFreeCellController<Card> {
           try {
             List<Card> deck = model.getDeck();
             controller.playGame(deck, model, numCascade, numOpen, shf);
-            if (controller.inProgress) {
-              try {
-                controller.run();
-              } catch (IllegalArgumentException e8) {
-                System.out.print(e8);
-              }
-            }
           } catch (IllegalArgumentException e10) {
             System.out.print(e10);
           } catch (NullPointerException e6) {
@@ -340,8 +377,12 @@ public class FreeCellController implements IFreeCellController<Card> {
         controller.ap.append("Could not start game.");
         controller.inProgress = false;
       } //catch (NullPointerException e6) {
-      //controller.ap.append("Could not start game.");
+        //controller.ap.append("Could not start game.");
+        //controller.inProgress = false;
       //}
+      catch (IOException e0) {
+        System.out.print(e0);
+      }
     }
-  }
+  }*/
 }
