@@ -110,29 +110,29 @@ public class FreeCellController implements IFreeCellController<Card> {
         PileType sourceType;
         PileType destType;
 
-        char st = source.charAt(0);
-        char rawSourceIndex;
+        String st = source.substring(0, 1);
+        String rawSourceIndex;
 
-        if (st == 'Q' || st == 'q') {
+        if (st.equals("Q") || st.equals("q")) {
           isToExit = true;
           sourceType = PileType.OPEN;
           si = 1;
         } else {
           switch (st) {
-            case 'O':
+            case "O":
               sourceType = PileType.OPEN;
-              rawSourceIndex = source.charAt(1);
-              si = Character.getNumericValue(rawSourceIndex);
+              rawSourceIndex = source.substring(1, source.length());
+              si = Integer.parseInt(rawSourceIndex);
               break;
-            case 'C':
+            case "C":
               sourceType = PileType.CASCADE;
-              rawSourceIndex = source.charAt(1);
-              si = Character.getNumericValue(rawSourceIndex);
+              rawSourceIndex = source.substring(1, source.length());
+              si = Integer.parseInt(rawSourceIndex);
               break;
-            case 'F':
+            case "F":
               sourceType = PileType.FOUNDATION;
-              rawSourceIndex = source.charAt(1);
-              si = Character.getNumericValue(rawSourceIndex);
+              rawSourceIndex = source.substring(1, source.length());
+              si = Integer.parseInt(rawSourceIndex);
               break;
             default:
               throw new IllegalArgumentException("Invalid source pile");
@@ -140,37 +140,37 @@ public class FreeCellController implements IFreeCellController<Card> {
         }
 
 
-        char dt = dest.charAt(0);
-        char rawDestIndex;
+        String dt = dest.substring(0, 1);
+        String rawDestIndex;
 
 
-        if (dt == 'Q' || dt == 'q') {
+        if (dt.equals("Q") || dt.equals("q")) {
           isToExit = true;
           destType = PileType.OPEN;
           di = 1;
         } else {
           switch (dt) {
-            case 'O':
+            case "O":
               destType = PileType.OPEN;
-              rawDestIndex = dest.charAt(1);
-              di = Character.getNumericValue(rawDestIndex);
+              rawDestIndex = dest.substring(1, dest.length());
+              di = Integer.parseInt(rawDestIndex);
               break;
-            case 'C':
+            case "C":
               destType = PileType.CASCADE;
-              rawDestIndex = dest.charAt(1);
-              di = Character.getNumericValue(rawDestIndex);
+              rawDestIndex = dest.substring(1, dest.length());
+              di = Integer.parseInt(rawDestIndex);
               break;
-            case 'F':
+            case "F":
               destType = PileType.FOUNDATION;
-              rawDestIndex = dest.charAt(1);
-              di = Character.getNumericValue(rawDestIndex);
+              rawDestIndex = dest.substring(1, dest.length());
+              di = Integer.parseInt(rawDestIndex);
               break;
             default:
               throw new IllegalArgumentException("Invalid destination pile");
           }
         }
 
-        if (rawIndex.charAt(0) == 'Q' || rawIndex.charAt(0) == 'q') {
+        if (rawIndex.substring(0, 1).equals("Q") || rawIndex.substring(0, 1).equals("q")) {
           isToExit = true;
           index = 1;
         } else {
@@ -193,19 +193,16 @@ public class FreeCellController implements IFreeCellController<Card> {
             model.move(sourceType, si - 1, index - 1, destType, di - 1);
             ap.append(model.getGameState());
           } catch (IllegalArgumentException ex) {
-            System.out.print(ex);
+            ap.append("Invalid move. Try again. Reason: " + ex);
           } catch (IOException ey) {
             System.out.print(ey);
           } catch (IndexOutOfBoundsException ez) {
-            inProgress = false;
-            ap.append("Game quit prematurely.");
+            ap.append("Invalid move. Try again. Reason: " + ez); //TODO: ask for cardIndex only
           }
         }
 
       } catch (IOException e3) {
         System.out.print(e3);
-      } catch (IndexOutOfBoundsException e4) {
-        System.out.print(e4);
       }
     }
 
@@ -283,7 +280,7 @@ public class FreeCellController implements IFreeCellController<Card> {
             shf = false;
             break;
           default:
-            throw new InputMismatchException("Invalid input!!");
+            throw new NumberFormatException("Invalid input");
         }
 
         if (isToExit) {
@@ -301,11 +298,11 @@ public class FreeCellController implements IFreeCellController<Card> {
               try {
                 controller.run();
               } catch (IllegalArgumentException e8) {
-                System.out.print(e8);//TODO
+                System.out.print("????");
               }
             }
-          } catch (InputMismatchException e00) {
-            controller.ap.append("Invalid move. Try again.\n");
+          } catch (IllegalArgumentException e10) {
+            System.out.print(e10);
           }
         }
       } catch (IllegalArgumentException e7) {
