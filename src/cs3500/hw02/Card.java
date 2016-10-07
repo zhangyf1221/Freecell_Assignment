@@ -43,7 +43,7 @@ public class Card {
    * print the card in String.
    * @return the card's index and suit in String
    */
-  public String printCard() {
+  public String toString() {
     return rank.toString() + suit.toString();
   }
 
@@ -53,7 +53,7 @@ public class Card {
    */
   public int cardValue() {
     Rank r = this.getRank();
-    int value = 0;
+    int value;
     switch (r) {
       case Ace:
         value = 1;

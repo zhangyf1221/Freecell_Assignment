@@ -29,9 +29,9 @@ public class CardTest {
   }
 
   @Test
-  public void printCard() throws Exception {
-    assertEquals("A♣", clubA.printCard());
-    assertEquals("K♦", diamondK.printCard());
+  public void toStringTest() throws Exception {
+    assertEquals("A♣", clubA.toString());
+    assertEquals("K♦", diamondK.toString());
   }
 
   @Test
