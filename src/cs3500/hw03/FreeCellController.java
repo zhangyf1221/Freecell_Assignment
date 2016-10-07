@@ -67,7 +67,7 @@ public class FreeCellController implements IFreeCellController<Card> {
       }
     } catch (IllegalStateException e4) {
       try {
-        ap.append("\nCould not start game.");
+        ap.append("Could not start game.");
       } catch (IOException e5) {
         System.out.print(e5);
       }
@@ -309,10 +309,10 @@ public class FreeCellController implements IFreeCellController<Card> {
           }
         }
       } catch (IllegalArgumentException e7) {
-        controller.ap.append("\nCould not start game.");
+        controller.ap.append("Could not start game.");
         controller.inProgress = false;
       } catch (NullPointerException e6) {
-        controller.ap.append("\nCould not start game.");
+        controller.ap.append("Could not start game.");
       }
     }
   }
