@@ -31,15 +31,56 @@ public class FreeCellControllerTest {
   private List<Card> deck1 = initDeck1();
 
   @Test
-  public void playGameTest() throws Exception {
-    Readable input = new StringReader("8 4 false");
-    Appendable output = new StringBuffer();
+  public void quitTest1() throws Exception {
+    Readable in = new StringReader("Q");
+    Appendable out = new StringBuffer();
 
-    IFreeCellController controller = new FreeCellController(input, output);
+    IFreeCellController controller = new FreeCellController(in, out);
 
     controller.playGame(deck1, new FreeCellModel(), 8, 4, false);
 
-    assertEquals(gameState1, output.toString());
+    assertEquals(gameState1 +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)" +
+            "\nGame quit prematurely.", out.toString());
+  }
+
+  @Test
+  public void quitTest2() throws Exception {
+    Readable in = new StringReader("C1 q");
+    Appendable out = new StringBuffer();
+    IFreeCellController controller = new FreeCellController(in, out);
+
+    controller.playGame(deck1, new FreeCellModel(), 8, 4, false);
+
+    assertEquals(gameState1 +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)" +
+            "\nGame quit prematurely.", out.toString());
+  }
+
+  @Test
+  public void quitTest3() throws Exception {
+    Readable in = new StringReader("C1 13 q123412412412412441224412124");
+    Appendable out = new StringBuffer();
+    IFreeCellController controller = new FreeCellController(in, out);
+
+    controller.playGame(deck1, new FreeCellModel(), 8, 4, false);
+
+    assertEquals(gameState1 +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)" +
+            "\nGame quit prematurely.", out.toString());
+  }
+
+  @Test
+  public void regularMoveTest() throws Exception {
+    Readable in = new StringReader("C1 7 O1");
+    Appendable out = new StringBuffer();
+    IFreeCellController controller = new FreeCellController(in, out);
+
+    controller.playGame(deck1, new FreeCellModel(), 8, 4, false);
+
+    assertEquals(gameState2 +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)",
+            out.toString());
   }
 
   private String gameState1 = "F1:" +
@@ -51,6 +92,23 @@ public class FreeCellControllerTest {
           "\nO3:" +
           "\nO4:" +
           "\nC1: A♦, 3♦, 5♦, 7♦, 9♦, J♦, K♦" +
+          "\nC2: A♣, 3♣, 5♣, 7♣, 9♣, J♣, K♣" +
+          "\nC3: A♥, 3♥, 5♥, 7♥, 9♥, J♥, K♥" +
+          "\nC4: A♠, 3♠, 5♠, 7♠, 9♠, J♠, K♠" +
+          "\nC5: 2♦, 4♦, 6♦, 8♦, 10♦, Q♦" +
+          "\nC6: 2♣, 4♣, 6♣, 8♣, 10♣, Q♣" +
+          "\nC7: 2♥, 4♥, 6♥, 8♥, 10♥, Q♥" +
+          "\nC8: 2♠, 4♠, 6♠, 8♠, 10♠, Q♠";
+
+  private String gameState2 = "F1:" +
+          "\nF2:" +
+          "\nF3:" +
+          "\nF4:" +
+          "\nO1: K♦" +
+          "\nO2:" +
+          "\nO3:" +
+          "\nO4:" +
+          "\nC1: A♦, 3♦, 5♦, 7♦, 9♦, J♦" +
           "\nC2: A♣, 3♣, 5♣, 7♣, 9♣, J♣, K♣" +
           "\nC3: A♥, 3♥, 5♥, 7♥, 9♥, J♥, K♥" +
           "\nC4: A♠, 3♠, 5♠, 7♠, 9♠, J♠, K♠" +
