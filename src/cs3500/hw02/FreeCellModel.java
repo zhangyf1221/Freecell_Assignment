@@ -127,7 +127,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
             switch (destType) {
               case OPEN:
                 if (openPileList.size() > destPileNumber) {
-                  if (po.isEmpty()) {
+                  if (!po.isEmpty()) {
                     openPileList.get(destPileNumber).add(oc);
                     po.remove(oc);
                     break;
@@ -136,7 +136,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                             "empty open pile");
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bound");
+                  throw new IllegalArgumentException("Destination pile number out of bounds");
                 }
 
 
@@ -162,7 +162,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                     }
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bound");
+                  throw new IllegalArgumentException("Destination pile number out of bounds");
                 }
 
               case CASCADE:
@@ -180,7 +180,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                     throw new IllegalArgumentException("Invalid move2");
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bound");
+                  throw new IllegalArgumentException("Destination pile number out of bounds");
                 }
 
               default:
@@ -191,7 +191,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
           }
           break;
         } else {
-          throw new IllegalArgumentException("Source pile number out of bound");
+          throw new IllegalArgumentException("Source pile number out of bounds");
         }
 
       case CASCADE:
@@ -210,7 +210,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                     throw new IllegalArgumentException("Open pile can only keep 1 card");
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bound");
+                  throw new IllegalArgumentException("Destination pile number out of bounds");
                 }
 
 
@@ -237,7 +237,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                     }
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bound");
+                  throw new IllegalArgumentException("Destination pile number out of bounds");
                 }
 
               case CASCADE:
@@ -249,10 +249,11 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                     casp.remove(casc);
                     break;
                   } else {
-                    throw new IllegalArgumentException("Invalid move6");
+                    throw new IllegalArgumentException("The card you move to the " +
+                            "pile is not in correct order");
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bound");
+                  throw new IllegalArgumentException("Destination pile number out of bounds");
                 }
 
               default:
@@ -370,5 +371,4 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
     return result;
   }
-
 }
