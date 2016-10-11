@@ -119,15 +119,22 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                    int destPileNumber) {
     switch (sourceType) {
       case OPEN:
-        if (openPileList.size() > sourcePileNumber) {
-          Pile<Card> po = openPileList.get(sourcePileNumber);
-          Card oc = po.getCard(cardIndex);
+        Pile<Card> po = openPileList.get(sourcePileNumber);
+        Card oc;
 
+        if (!po.isEmpty()) {
+          oc = po.getCard(cardIndex);
+        } else {
+          throw new IllegalArgumentException("Invalid card index");
+        }
+
+        if (openPileList.size() > sourcePileNumber) {
           if (po.isLastCard(cardIndex)) {
             switch (destType) {
+
               case OPEN:
                 if (openPileList.size() > destPileNumber) {
-                  if (!po.isEmpty()) {
+                  if (openPileList.get(destPileNumber).isEmpty()) {
                     openPileList.get(destPileNumber).add(oc);
                     po.remove(oc);
                     break;
@@ -136,16 +143,37 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                             "empty open pile");
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bounds");
+                  throw new IllegalArgumentException("Destination pile index out of bounds");
                 }
 
+              case CASCADE:
+                Pile<Card> pc = cascadePileList.get(destPileNumber);
+
+                if (cascadePileList.size() > destPileNumber) {
+                  if (pc.isEmpty()) {
+                    pc.add(oc);
+                    po.remove(oc);
+                    break;
+                  } else {
+                    Card cc = pc.lastCard();
+                    if (oc.cardValue() == cc.cardValue() - 1) {//descend order?? 1 value small or just smaller
+                      pc.add(oc);
+                      po.remove(oc);
+                      break;
+                    } else {
+                      throw new IllegalArgumentException("Has to be descend order");
+                    }
+                  }
+                } else {
+                  throw new IllegalArgumentException("Destination pile index out of bounds");
+                }
 
               case FOUNDATION:
-                Pile<Card> p2 = foundationPileList.get(destPileNumber);
+                Pile<Card> pf = foundationPileList.get(destPileNumber);
                 if (foundationPileList.size() > destPileNumber) {
-                  if (p2.isEmpty()) {
+                  if (pf.isEmpty()) {
                     if (oc.cardValue() == 1) {
-                      p2.add(oc);
+                      pf.add(oc);
                       po.remove(oc);
                       break;
                     } else {
@@ -153,45 +181,28 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                               "into a empty foundation pile");
                     }
                   } else {
-                    if (p2.lastCard().nextCard(oc)) {
-                      p2.add(oc);
+                    Card fc = pf.lastCard();
+                    if (fc.nextCard(oc)) {
+                      pf.add(oc);
                       po.remove(oc);
                       break;
                     } else {
-                      throw new IllegalArgumentException("Invalid move1");
+                      throw new IllegalArgumentException("The card you move to foundation pile " +
+                              "should in descend order.");
                     }
                   }
                 } else {
-                  throw new IllegalArgumentException("Destination pile number out of bounds");
-                }
-
-              case CASCADE:
-                Pile<Card> pc = cascadePileList.get(destPileNumber);
-                Card cc = pc.lastCard();
-                Pile<Card> p3 = openPileList.get(sourcePileNumber);
-                Card c3 = p3.getCard(cardIndex);
-
-                if (cascadePileList.size() > destPileNumber) {
-                  if (c3.cardValue() == cc.cardValue() - 1) {
-                    pc.add(c3);
-                    p3.remove(c3);
-                    break;
-                  } else {
-                    throw new IllegalArgumentException("Invalid move2");
-                  }
-                } else {
-                  throw new IllegalArgumentException("Destination pile number out of bounds");
+                  throw new IllegalArgumentException("Destination pile index out of bounds");
                 }
 
               default:
-                throw new IllegalArgumentException("Invalid move3");
+                throw new IllegalArgumentException("Invalid move");
             }
           } else {
-            throw new IllegalArgumentException("Invalid move4");
+            throw new IllegalArgumentException("No card found. Card index should only be 1");
           }
-          break;
         } else {
-          throw new IllegalArgumentException("Source pile number out of bounds");
+          throw new IllegalArgumentException("Source pile index out of bounds");
         }
 
       case CASCADE:
@@ -260,7 +271,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                 throw new IllegalArgumentException("Invalid move7");
             }
           } else {
-            throw new IllegalArgumentException("Invalid move8");
+            throw new IllegalArgumentException("The card you chose is not the last card");
           }
           break;
         } else {
@@ -355,7 +366,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
         if (i == cascadePileList.size()) {
           if (j == p.size() - 1) {
-            result += " " + c.toString();
+            result += " " + c.toString() + "\n";
           } else {
             result += " " + c.toString() + ",";
           }
