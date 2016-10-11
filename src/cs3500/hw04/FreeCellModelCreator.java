@@ -5,6 +5,7 @@ package cs3500.hw04;
  */
 
 
+import cs3500.hw02.IFreeCellModel;
 import cs3500.hw02.FreeCellModel;
 
 /**
@@ -24,7 +25,7 @@ public class FreeCellModelCreator {
     MULTIMOVE;
   }
 
-  public static FreeCellModel creat(GameType type) {
+  public static IFreeCellModel<?> create(GameType type) {
     switch (type) {
       case MULTIMOVE:
         return new FreeCellMultimoveModel();
