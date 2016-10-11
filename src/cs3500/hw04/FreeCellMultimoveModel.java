@@ -132,10 +132,10 @@ public class FreeCellMultimoveModel extends FreeCellModel {
                     pc.remove(pc.getCard(cardIndex));
                     break;
                   } else {
-                    throw new IllegalArgumentException("Open pile can only keep 1 card");
+                    throw new IllegalArgumentException("Open pile can only keeps 1 card");
                   }
                 } else {
-                  throw new IllegalArgumentException("Open pile can only keep 1 card");
+                  throw new IllegalArgumentException("Open pile can only keeps 1 card");
                 }
               } else {
                 throw new IllegalArgumentException("Destination pile number out of bounds");
