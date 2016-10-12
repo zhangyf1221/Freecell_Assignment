@@ -101,6 +101,28 @@ public class Card {
   }
 
 
+  public String cardColor() {
+    Suit s = this.getSuit();
+    String color;
+    switch (s) {
+      case Spade:
+        color = "Black";
+        break;
+      case Heart:
+        color = "Red";
+        break;
+      case Club:
+        color = "Black";
+        break;
+      case Diamond:
+        color = "Red";
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid suit");
+    }
+    return color;
+  }
+
 
 
   /**

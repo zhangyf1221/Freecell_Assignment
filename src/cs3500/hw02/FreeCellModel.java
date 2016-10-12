@@ -114,12 +114,12 @@ public class FreeCellModel implements IFreeCellModel<Card> {
    * @param destType         the type of the destination pile (see {@link PileType})
    * @param destPileNumber   the pile number of the given type, starting at 0
    * @throws IllegalArgumentException if the move is not possible
-   */
+   *///TODO:alternating color, valid form
   public void move(PileType sourceType, int sourcePileNumber, int cardIndex, PileType destType,
                    int destPileNumber) {
     switch (sourceType) {
       case OPEN:
-        Pile<Card> po = openPileList.get(sourcePileNumber);
+        Pile po = openPileList.get(sourcePileNumber);
         Card oc;
 
         if (!po.isEmpty()) {
@@ -147,7 +147,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                 }
 
               case CASCADE:
-                Pile<Card> pc = cascadePileList.get(destPileNumber);
+                Pile pc = cascadePileList.get(destPileNumber);
 
                 if (cascadePileList.size() > destPileNumber) {
                   if (pc.isEmpty()) {
@@ -169,7 +169,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                 }
 
               case FOUNDATION:
-                Pile<Card> pf = foundationPileList.get(destPileNumber);
+                Pile pf = foundationPileList.get(destPileNumber);
                 if (foundationPileList.size() > destPileNumber) {
                   if (pf.isEmpty()) {
                     if (oc.cardValue() == 1) {
@@ -207,7 +207,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
       case CASCADE:
         if (cascadePileList.size() > sourcePileNumber) {
-          Pile<Card> casp = cascadePileList.get(sourcePileNumber);
+          Pile casp = cascadePileList.get(sourcePileNumber);
           Card casc = casp.getCard(cardIndex);
           if (casp.isLastCard(cardIndex)) {
             switch (destType) {
@@ -227,7 +227,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
               case FOUNDATION:
                 if (foundationPileList.size() > destPileNumber) {
-                  Pile<Card> fp = foundationPileList.get(destPileNumber);
+                  Pile fp = foundationPileList.get(destPileNumber);
 
                   if (fp.isEmpty()) {
                     if (casc.cardValue() == 1) {
@@ -244,7 +244,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                       casp.remove(casc);
                       break;
                     } else {
-                      throw new IllegalArgumentException("Invalid move5");
+                      throw new IllegalArgumentException("Cards should be consecutive");
                     }
                   }
                 } else {
@@ -253,7 +253,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
               case CASCADE:
                 if (cascadePileList.size() > destPileNumber) {
-                  Pile<Card> cp = cascadePileList.get(destPileNumber);
+                  Pile cp = cascadePileList.get(destPileNumber);
                   Card cc = cp.lastCard();
                   if (casc.cardValue() == cc.cardValue() - 1) {
                     cp.add(casc);
@@ -329,7 +329,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
         result += "\n";
       } else {
         for (int j = 0; j < foundationPileList.get(i - 1).size(); j++) {
-          Pile<Card> p = foundationPileList.get(i - 1);
+          Pile p = foundationPileList.get(i - 1);
           Card c = p.get(j);
           if (j == p.size() - 1) {
             result += " " + c.toString() + "\n";
@@ -346,7 +346,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
         result += "\n";
       } else {
         for (int j = 0; j < openPileList.get(i - 1).size(); j++) {
-          Pile<Card> p = openPileList.get(i - 1);
+          Pile p = openPileList.get(i - 1);
           Card c = p.get(j);
           if (j == p.size() - 1) {
             result += " " + c.toString() + "\n";
@@ -361,7 +361,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
       result += String.format("C%d:", i);
 
       for (int j = 0; j < cascadePileList.get(i - 1).size(); j++) {
-        Pile<Card> p = cascadePileList.get(i - 1);
+        Pile p = cascadePileList.get(i - 1);
         Card c = p.get(j);
 
         if (i == cascadePileList.size()) {

@@ -321,15 +321,15 @@ public class FreeCellControllerTest {
   }
 
   private FreeCellModel model3 = new FreeCellModel();
-  private Pile<Card> f1 = new Pile<>();
-  private Pile<Card> f2 = new Pile<>();
-  private Pile<Card> f3 = new Pile<>();
-  private Pile<Card> f4 = new Pile<>();
-  private Pile<Card> o1 = new Pile<>();
-  private Pile<Card> c1 = new Pile<>();
-  private Pile<Card> c2 = new Pile<>();
-  private Pile<Card> c3 = new Pile<>();
-  private Pile<Card> c4 = new Pile<>();
+  private Pile f1 = new Pile();
+  private Pile f2 = new Pile();
+  private Pile f3 = new Pile();
+  private Pile f4 = new Pile();
+  private Pile o1 = new Pile();
+  private Pile c1 = new Pile();
+  private Pile c2 = new Pile();
+  private Pile c3 = new Pile();
+  private Pile c4 = new Pile();
 
 
   private void initF1() {

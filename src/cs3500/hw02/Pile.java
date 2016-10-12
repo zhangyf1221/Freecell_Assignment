@@ -10,9 +10,9 @@ import java.util.ArrayList;
 /**
  * Represents a pile, can be a open pile, foundation pile or cascade pile.
  */
-public class Pile<Card> {
+public class Pile {
   // Define field:
-  protected List<Card> pile;
+  public List<Card> pile;
 
   public Pile() {
     this.pile = new ArrayList<>();
@@ -79,6 +79,13 @@ public class Pile<Card> {
    */
   public boolean isLastCard(int i) {
     return (pile.size() == (i + 1));
+  }
+
+  /**
+   * Remove the last card of a pile.
+   */
+  public void removeLast() {
+    pile.remove(size() - 1);
   }
 
 }

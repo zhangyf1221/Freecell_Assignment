@@ -162,12 +162,12 @@ public class FreeCellModelTest {
           "\nC1:";
 
   private FreeCellModel model3 = new FreeCellModel();
-  private Pile<Card> f1 = new Pile<>();
-  private Pile<Card> f2 = new Pile<>();
-  private Pile<Card> f3 = new Pile<>();
-  private Pile<Card> f4 = new Pile<>();
-  private Pile<Card> o1 = new Pile<>();
-  private Pile<Card> c1 = new Pile<>();
+  private Pile f1 = new Pile();
+  private Pile f2 = new Pile();
+  private Pile f3 = new Pile();
+  private Pile f4 = new Pile();
+  private Pile o1 = new Pile();
+  private Pile c1 = new Pile();
 
   private void initF1() {
     f1.add(new Card(Rank.Ace, Suit.Diamond));

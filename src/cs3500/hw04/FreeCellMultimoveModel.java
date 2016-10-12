@@ -5,6 +5,8 @@ package cs3500.hw04;
  */
 
 
+import java.util.List;
+
 import cs3500.hw02.Card;
 import cs3500.hw02.FreeCellModel;
 import cs3500.hw02.Pile;
@@ -27,7 +29,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
     switch (sourceType) {
 
       case OPEN://source type
-        Pile<Card> po = openPileList.get(sourcePileNumber);
+        Pile po = openPileList.get(sourcePileNumber);
         Card oc;
 
         if (!po.isEmpty()) {
@@ -55,7 +57,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
                 }
 
               case CASCADE://dest type
-                Pile<Card> pc = cascadePileList.get(destPileNumber);
+                Pile pc = cascadePileList.get(destPileNumber);
 
                 if (cascadePileList.size() > destPileNumber) {
                   if (pc.isEmpty()) {
@@ -77,7 +79,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
                 }
 
               case FOUNDATION://dest type
-                Pile<Card> pf = foundationPileList.get(destPileNumber);
+                Pile pf = foundationPileList.get(destPileNumber);
                 if (foundationPileList.size() > destPileNumber) {
                   if (pf.isEmpty()) {
                     if (oc.cardValue() == 1) {
@@ -103,7 +105,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
                   throw new IllegalArgumentException("Destination pile index out of bounds");
                 }
 
-                default:
+              default:
                 throw new IllegalArgumentException("Invalid move");
             }//close bracket for switch dest type
           } else {
@@ -114,7 +116,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
         }
 
       case CASCADE:
-        Pile<Card> pc = cascadePileList.get(sourcePileNumber);//nullPointerException or indexOutOfBounds
+        Pile pc = cascadePileList.get(sourcePileNumber);//nullPointerException or indexOutOfBounds
 
         if (!pc.isEmpty()) {
           Card cc = pc.getCard(cardIndex);
@@ -142,12 +144,49 @@ public class FreeCellMultimoveModel extends FreeCellModel {
               }
 
             case CASCADE:
-              //TODO: multimove
+              //TODO: multimove check empty free open piles
+              if (isValidForm(pc.pile, cardIndex)
+                      && cascadePileList.get(destPileNumber).lastCard().cardValue() ==
+                      pc.get(cardIndex).cardValue() - 1) {
+                for (int i = cardIndex; i < pc.size(); i++) {
+                  cascadePileList.get(destPileNumber).add(pc.get(i));
+                }
+                int num = pc.size() - cardIndex + 1;
+                for (int j = 0; j < num; j++) {
+                  pc.removeLast();
+                }
+              } else {
+                throw new IllegalArgumentException("Invalid move. Not a valid form.");
+              }
+
+
               break;//don't forget to remove this break
 
             case FOUNDATION:
-              //TODO: multimove
-              break;//don't forget to remove this break
+              if (foundationPileList.size() > destPileNumber) {
+                Pile fp = foundationPileList.get(destPileNumber);
+
+                if (fp.isEmpty()) {
+                  if (pc.get(cardIndex).cardValue() == 1) {
+                    fp.add(pc.get(cardIndex));
+                    pc.remove(pc.get(cardIndex));
+                    break;
+                  } else {
+                    throw new IllegalArgumentException("Only Ace can be placed " +
+                            "into a empty foundation pile");
+                  }
+                } else {
+                  if (fp.lastCard().nextCard(pc.get(cardIndex))) {
+                    fp.add(pc.get(cardIndex));
+                    pc.remove(pc.get(cardIndex));
+                    break;
+                  } else {
+                    throw new IllegalArgumentException("Cards should be consecutive");
+                  }
+                }
+              } else {
+                throw new IllegalArgumentException("Destination pile number out of bounds");
+              }
 
             default:
               throw new IllegalArgumentException("Invalid move");
@@ -165,4 +204,15 @@ public class FreeCellMultimoveModel extends FreeCellModel {
     }//close bracket for switch source type
   }
 
+  public boolean isValidForm(List<Card> pile, int index) {
+    if (pile.size() <= index) throw new IllegalArgumentException("Invalid card index");
+    if (index == pile.size() - 1) return true;
+    for (int i = index + 1; i < pile.size(); i++) {
+      if (!(pile.get(i - 1).cardValue() == pile.get(i).cardValue() - 1)
+              && !(pile.get(i - 1).cardColor() == pile.get(i).cardColor())) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
