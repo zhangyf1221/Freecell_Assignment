@@ -118,11 +118,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
       case CASCADE:
         Pile pc = cascadePileList.get(sourcePileNumber);//nullPointerException or indexOutOfBounds
 
-        if (!pc.isEmpty()) {
-          Card cc = pc.getCard(cardIndex);
-        } else {
-          throw new IllegalArgumentException("Source pile is empty");
-        }
+        if (pc.isEmpty()) throw new IllegalArgumentException("Source pile is empty");
 
         if (cascadePileList.size() > sourcePileNumber) {
           switch (destType) {
@@ -144,7 +140,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
               }
 
             case CASCADE:
-              //TODO: multimove check empty free open piles
+              //TODO: multimove check number of empty free open piles
               if (isValidForm(pc.pile, cardIndex)
                       && cascadePileList.get(destPileNumber).lastCard().cardValue() ==
                       pc.get(cardIndex).cardValue() - 1) {
@@ -155,12 +151,10 @@ public class FreeCellMultimoveModel extends FreeCellModel {
                 for (int j = 0; j < num; j++) {
                   pc.removeLast();
                 }
+                break;
               } else {
                 throw new IllegalArgumentException("Invalid move. Not a valid form.");
               }
-
-
-              break;//don't forget to remove this break
 
             case FOUNDATION:
               if (foundationPileList.size() > destPileNumber) {
