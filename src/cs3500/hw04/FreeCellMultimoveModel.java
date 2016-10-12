@@ -203,7 +203,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
     if (index == pile.size() - 1) return true;
     for (int i = index + 1; i < pile.size(); i++) {
       if (!(pile.get(i - 1).cardValue() == pile.get(i).cardValue() - 1)
-              && !(pile.get(i - 1).cardColor() == pile.get(i).cardColor())) {
+              || !(pile.get(i - 1).cardColor() == pile.get(i).cardColor())) {
         return false;
       }
     }
