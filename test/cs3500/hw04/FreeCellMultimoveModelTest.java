@@ -1,13 +1,16 @@
 package cs3500.hw04;
 
 import org.junit.Test;
+
 import java.util.List;
+
 import cs3500.hw02.Card;
 import cs3500.hw02.FreeCellModel;
 import cs3500.hw02.Pile;
 import cs3500.hw02.PileType;
 import cs3500.hw02.Rank;
 import cs3500.hw02.Suit;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -42,7 +45,19 @@ public class FreeCellMultimoveModelTest {
     multimoveModel.move(PileType.CASCADE, 0, 12, PileType.FOUNDATION, 0);
     assertEquals(false, multimoveModel.foundationPileList.get(0).isEmpty());
     multimoveModel.move(PileType.CASCADE, 1, 12, PileType.OPEN, 0);
-    assertEquals("", multimoveModel.getGameState());
+    assertEquals("F1: A♠\n" +
+                    "F2:\n" +
+                    "F3:\n" +
+                    "F4:\n" +
+                    "O1: A♥\n" +
+                    "O2:\n" +
+                    "O3:\n" +
+                    "O4:\n" +
+                    "C1: K♠, Q♠, J♠, 10♠, 9♠, 8♠, 7♠, 6♠, 5♠, 4♠, 3♠, 2♠\n" +
+                    "C2: K♥, Q♥, J♥, 10♥, 9♥, 8♥, 7♥, 6♥, 5♥, 4♥, 3♥, 2♥\n" +
+                    "C3: K♣, Q♣, J♣, 10♣, 9♣, 8♣, 7♣, 6♣, 5♣, 4♣, 3♣, 2♣, A♣\n" +
+                    "C4: K♦, Q♦, J♦, 10♦, 9♦, 8♦, 7♦, 6♦, 5♦, 4♦, 3♦, 2♦, A♦\n",
+            multimoveModel.getGameState());
 
   }
 

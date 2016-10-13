@@ -193,7 +193,8 @@ public class FreeCellMultimoveModel extends FreeCellModel {
         } else {
           throw new IllegalArgumentException("Source pile index out of bounds");
         }
-        break;//remove
+        break;
+
       case FOUNDATION:
         throw new IllegalArgumentException("Cannot move a card out from foundation pile");
 
