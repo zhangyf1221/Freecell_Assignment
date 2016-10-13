@@ -16,7 +16,7 @@ import cs3500.hw02.Rank;
 import cs3500.hw02.Suit;
 
 /**
- * A FreeCell game model with multimove option
+ * A FreeCell game model with multimove option.
  */
 public class FreeCellMultimoveModel extends FreeCellModel {
 
@@ -27,7 +27,6 @@ public class FreeCellMultimoveModel extends FreeCellModel {
   @Override
   public void move(PileType sourceType, int sourcePileNumber, int cardIndex, PileType destType,
                    int destPileNumber) {
-    //TODO: move method for multimove model
 
     switch (sourceType) {
 
@@ -70,7 +69,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
                     break;
                   } else {
                     Card cc = pc.lastCard();
-                    if (oc.cardValue() == cc.cardValue() - 1) {//descend order?? 1 value small or just smaller
+                    if (oc.cardValue() == cc.cardValue() - 1) {
                       pc.add(oc);
                       po.remove(oc);
                       break;
@@ -111,7 +110,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
 
               default:
                 throw new IllegalArgumentException("Invalid move");
-            }//close bracket for switch dest type
+            } //close bracket for switch dest type
           } else {
             throw new IllegalArgumentException("No card found. Card index should only be 1");
           }
@@ -123,7 +122,9 @@ public class FreeCellMultimoveModel extends FreeCellModel {
       case CASCADE:
         Pile pc = cascadePileList.get(sourcePileNumber);
 
-        if (pc.isEmpty()) throw new IllegalArgumentException("Source pile is empty");
+        if (pc.isEmpty()) {
+          throw new IllegalArgumentException("Source pile is empty");
+        }
 
         if (cascadePileList.size() > sourcePileNumber) {
           switch (destType) {
@@ -189,7 +190,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
 
             default:
               throw new IllegalArgumentException("Invalid move");
-          }//close bracket for switch dest type
+          } //close bracket for switch dest type
         } else {
           throw new IllegalArgumentException("Source pile index out of bounds");
         }
@@ -201,20 +202,31 @@ public class FreeCellMultimoveModel extends FreeCellModel {
       default:
         throw new IllegalArgumentException("Invalid move!");
 
-    }//close bracket for switch source type
+    } //close bracket for switch source type
   }
 
+  /**
+   * EDIT: New method added to FreeCellModel class.
+   * Check the pile is valid form or not.
+   * @param pile  a pile which is formed by a list of card
+   * @param index index of card player wants to move
+   * @return true if the pile is valid form, false if not
+   */
   public boolean isValidForm(List<Card> pile, int index) {
-    if (pile.size() <= index) throw new IllegalArgumentException("Invalid card index");
-    if (index == pile.size() - 1) return true;
+    if (pile.size() <= index) {
+      throw new IllegalArgumentException("Invalid card index");
+    }
+    if (index == pile.size() - 1) {
+      return true;
+    }
 
-    for (int i = index + 1; i < pile.size(); i++) {//consecutive check
-      if (!(pile.get(i - 1).cardValue() == pile.get(i).cardValue() + 1)) {
+    for (int i = index + 1; i < pile.size(); i++) { //consecutive check
+      if (pile.get(i - 1).cardValue() != pile.get(i).cardValue() + 1) {
         return false;
       }
     }
 
-    for (int i = index + 1; i < pile.size(); i++) {//alternative color check
+    for (int i = index + 1; i < pile.size(); i++) { //alternative color check
       if (pile.get(i - 1).cardColor() == pile.get(i).cardColor()) {
         return false;
       }
@@ -225,14 +237,13 @@ public class FreeCellMultimoveModel extends FreeCellModel {
 
   /**
    * Get a deck in descend order.
-   *
    * @return List of card
    */
   @Override
   public List<Card> getDeck() {
     List<Card> result = new ArrayList<>();
-    Rank ranks[] = Rank.values();
-    Suit suits[] = Suit.values();
+    Rank[] ranks = Rank.values();
+    Suit[] suits = Suit.values();
     for (int i = 12; i > -1; i--) {
       for (int j = 3; j > -1; j--) {
         result.add(new Card(ranks[i], suits[j]));

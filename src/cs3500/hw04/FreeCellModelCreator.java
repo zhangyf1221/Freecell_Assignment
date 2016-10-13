@@ -22,6 +22,11 @@ public class FreeCellModelCreator {
     MULTIMOVE;
   }
 
+  /**
+   * Create a regular single move FreeCell model or a multimove FreeCell model with given type.
+   * @param type type of game which is singlemove or multimove
+   * @return FreeCellModel with given game type
+   */
   public static FreeCellModel create(GameType type) {
     switch (type) {
       case MULTIMOVE:

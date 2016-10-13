@@ -101,6 +101,11 @@ public class Card {
   }
 
 
+  /**
+   * EDIT: new method add in Card class.
+   * Get the color of card which spade and club is black and heart and diamond is red.
+   * @return String to represent the color of card
+   */
   public String cardColor() {
     Suit s = this.getSuit();
     String color;

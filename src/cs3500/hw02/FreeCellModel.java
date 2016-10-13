@@ -29,9 +29,6 @@ public class FreeCellModel implements IFreeCellModel<Card> {
    */
   public FreeCellModel() {
     foundationPileList = new ArrayList<Pile>();
-    for (int i = 0; i < 4; i++) {
-      foundationPileList.add(new Pile());
-    }
     openPileList = new ArrayList<Pile>();
     cascadePileList = new ArrayList<Pile>();
     inProgress = true;
@@ -48,8 +45,8 @@ public class FreeCellModel implements IFreeCellModel<Card> {
   @Override
   public List<Card> getDeck() {
     List<Card> result = new ArrayList<>();
-    Rank ranks[] = Rank.values();
-    Suit suits[] = Suit.values();
+    Rank[] ranks = Rank.values();
+    Suit[] suits = Suit.values();
     for (int i = 0; i < 13; i++) {
       for (int j = 0; j < 4; j++) {
         result.add(new Card(ranks[i], suits[j]));
@@ -59,8 +56,16 @@ public class FreeCellModel implements IFreeCellModel<Card> {
   }
 
 
+  /*
+  Made change here. Initialize foundation pile at start game. Clear foundation pile, open pile and
+  cascade pile before start a new game.
+   */
   @Override
   public void startGame(List<Card> deck, int numCascadePiles, int numOpenPiles, boolean shuffle) {
+
+    foundationPileList.clear();
+    openPileList.clear();
+    cascadePileList.clear();
 
     if (shuffle) {
       Collections.shuffle(deck);
@@ -71,17 +76,22 @@ public class FreeCellModel implements IFreeCellModel<Card> {
     }
 
     if (this.validDeck(deck)) {
-      // Set up cascade pile list
       if (deck.isEmpty()) {
         throw new IllegalArgumentException("Deck is empty");
       }
 
+      // Set up foundation pile list
+      for (int i = 0; i < 4; i++) {
+        foundationPileList.add(new Pile());
+      }
 
+
+      // Set up cascade pile list
       for (int i = 0; i < numCascadePiles; i++) {
         cascadePileList.add(new Pile());
       }
-      // Set up open pile list
 
+      // Set up open pile list
       for (int j = 0; j < numOpenPiles; j++) {
         openPileList.add(new Pile());
       }
@@ -98,6 +108,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
   /**
    * Check the given deck is valid or not.
+   * EDIT: Change method from public to private
    *
    * @param deck list of cards
    * @return true is the deck is valid, false if not
@@ -118,7 +129,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
    * @param destType         the type of the destination pile (see {@link PileType})
    * @param destPileNumber   the pile number of the given type, starting at 0
    * @throws IllegalArgumentException if the move is not possible
-   *///TODO:alternating color, valid form
+   */
   public void move(PileType sourceType, int sourcePileNumber, int cardIndex, PileType destType,
                    int destPileNumber) {
     switch (sourceType) {
@@ -160,7 +171,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
                     break;
                   } else {
                     Card cc = pc.lastCard();
-                    if (oc.cardValue() == cc.cardValue() - 1) {//descend order?? 1 value small or just smaller
+                    if (oc.cardValue() == cc.cardValue() - 1) {
                       pc.add(oc);
                       po.remove(oc);
                       break;
@@ -208,6 +219,8 @@ public class FreeCellModel implements IFreeCellModel<Card> {
         } else {
           throw new IllegalArgumentException("Source pile index out of bounds");
         }
+        break;
+
 
       case CASCADE:
         if (cascadePileList.size() > sourcePileNumber) {
@@ -327,6 +340,10 @@ public class FreeCellModel implements IFreeCellModel<Card> {
   public String getGameState() {
     String result = "";
 
+    if (cascadePileList.size() < 4 || openPileList.size() < 1 || !validDeck(deck)) {
+      return "";
+    }
+
     for (int i = 1; i < foundationPileList.size() + 1; i++) {
       result += String.format("F%d:", i);
       if (foundationPileList.get(i - 1).isEmpty()) {
@@ -370,7 +387,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
         if (i == cascadePileList.size()) {
           if (j == p.size() - 1) {
-            result += " " + c.toString() + "\n";
+            result += " " + c.toString();
           } else {
             result += " " + c.toString() + ",";
           }
@@ -386,8 +403,15 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
     return result;
   }
+
+  /**
+   * EDIT: New method added to FreeCellModel class.
+   * Check the pile is valid form or not.
+   * @param pile a pile which is formed by a list of card
+   * @param index index of card player wants to move
+   * @return true if the pile is valid form, false if not
+   */
   public boolean isValidForm(List<Card> pile, int index) {
     return false;
   }
-
 }

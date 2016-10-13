@@ -1,7 +1,9 @@
 package cs3500.hw03;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
+
 import java.io.StringReader;
 import cs3500.hw02.Card;
 import cs3500.hw02.FreeCellModel;
@@ -71,7 +73,8 @@ public class FreeCellControllerTest {
 
     assertEquals(gameState1 +
                     "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n" +
-                    gameState2,
+                    gameState2 +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n",
             out.toString());
   }
 
@@ -86,7 +89,8 @@ public class FreeCellControllerTest {
     assertEquals(gameState1 +
                     "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n" +
                     "Invalid move. Try again. " +
-                    "Reason: java.lang.IllegalArgumentException: Source pile number out of bound",
+                    "Reason: java.lang.IllegalArgumentException: Source pile number out of bound" +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n",
             out.toString());
   }
 
@@ -101,7 +105,8 @@ public class FreeCellControllerTest {
     assertEquals(gameState1 +
                     "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n" +
                     "Invalid move. Try again. " +
-                    "Reason: java.lang.IndexOutOfBoundsException: Index: 16, Size: 7",
+                    "Reason: java.lang.IndexOutOfBoundsException: Index: 16, Size: 7" +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n",
             out.toString());
   }
 
@@ -117,7 +122,8 @@ public class FreeCellControllerTest {
                     "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n" +
                     "Invalid move. Try again. " +
                     "Reason: java.lang.IllegalArgumentException: " +
-                    "Destination pile number out of bounds",
+                    "Destination pile number out of bounds" +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n",
             out.toString());
   }
 
@@ -132,7 +138,8 @@ public class FreeCellControllerTest {
     assertEquals(gameState1 +
                     "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n" +
                     "Invalid move. Try again. Reason: java.lang.IllegalArgumentException: " +
-                    "The card you move to the pile is not in correct order",
+                    "The card you move to the pile is not in correct order" +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n",
             out.toString());
   }
 
@@ -164,7 +171,8 @@ public class FreeCellControllerTest {
                     "C8: 2♠, 4♠, 6♠, 8♠, 10♠, Q♠" +
                     "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n" +
                     "Invalid move. Try again. " +
-                    "Reason: java.lang.IllegalArgumentException: Open pile can only keep 1 card",
+                    "Reason: java.lang.IllegalArgumentException: Open pile can only keeps 1 card" +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n",
             out.toString());
   }
 
@@ -180,7 +188,8 @@ public class FreeCellControllerTest {
                     "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n" +
                     "Invalid move. Try again. " +
                     "Reason: java.lang.IllegalArgumentException: " +
-                    "Only Ace can be placed into a empty foundation pile",
+                    "Only Ace can be placed into a empty foundation pile" +
+            "\nEnter your move: (SourceType + Index, CardIndex, DestType + Index)\n",
             out.toString());
   }
 

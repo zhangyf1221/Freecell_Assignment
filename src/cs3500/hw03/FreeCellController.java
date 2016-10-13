@@ -52,8 +52,7 @@ public class FreeCellController implements IFreeCellController<Card> {
    */
   public void playGame(List<Card> deck, IFreeCellModel<Card> model, int numCascades,
                        int numOpens, boolean shuffle) {
-//TODO: playGame throw an IllegalArgumentException if an invalid number of cascade and/or open piles is provided to it
-//TODO: playGame transmit the final board after the game has been won (which should be showing all cards in the foundation piles)
+
     if (deck == null) {
       throw new IllegalArgumentException("Deck can't be null");
     }
@@ -273,7 +272,7 @@ public class FreeCellController implements IFreeCellController<Card> {
             } catch (IOException ey) {
               System.out.print(ey);
             } catch (IndexOutOfBoundsException ez) {
-              ap.append("Invalid move. Try again. Reason: " + ez); //TODO: ask for cardIndex only
+              ap.append("Invalid move. Try again. Reason: " + ez);
             }
           }
 
@@ -406,11 +405,7 @@ public class FreeCellController implements IFreeCellController<Card> {
       } catch (IllegalArgumentException e7) {
         controller.ap.append("Could not start game.");
         controller.inProgress = false;
-      } //catch (NullPointerException e6) {
-        //controller.ap.append("Could not start game.");
-        //controller.inProgress = false;
-      //}
-      catch (IOException e0) {
+      } catch (IOException e0) {
         System.out.print(e0);
       }
     }
