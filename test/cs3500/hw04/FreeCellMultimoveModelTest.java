@@ -41,7 +41,8 @@ public class FreeCellMultimoveModelTest {
     assertEquals(true, multimoveModel.foundationPileList.get(0).isEmpty());
     multimoveModel.move(PileType.CASCADE, 0, 12, PileType.FOUNDATION, 0);
     assertEquals(false, multimoveModel.foundationPileList.get(0).isEmpty());
-
+    multimoveModel.move(PileType.CASCADE, 1, 12, PileType.OPEN, 0);
+    assertEquals("", multimoveModel.getGameState());
 
   }
 

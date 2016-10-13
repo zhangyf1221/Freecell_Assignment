@@ -118,6 +118,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
         } else {
           throw new IllegalArgumentException("Source pile index out of bounds");
         }
+        break;
 
       case CASCADE:
         Pile pc = cascadePileList.get(sourcePileNumber);
