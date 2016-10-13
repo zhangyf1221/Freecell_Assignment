@@ -38,20 +38,11 @@ public class FreeCellMultimoveModelTest {
                     "C3: K♣, Q♣, J♣, 10♣, 9♣, 8♣, 7♣, 6♣, 5♣, 4♣, 3♣, 2♣, A♣\n" +
                     "C4: K♦, Q♦, J♦, 10♦, 9♦, 8♦, 7♦, 6♦, 5♦, 4♦, 3♦, 2♦, A♦\n",
             multimoveModel.getGameState());
-    multimoveModel.move(PileType.CASCADE, 0, 12, PileType.OPEN, 0);
-    assertEquals("F1:\n" +
-                    "F2:\n" +
-                    "F3:\n" +
-                    "F4:\n" +
-                    "O1: A♠\n" +
-                    "O2:\n" +
-                    "O3:\n" +
-                    "O4:\n" +
-                    "C1: K♠, Q♠, J♠, 10♠, 9♠, 8♠, 7♠, 6♠, 5♠, 4♠, 3♠, 2♠\n" +
-                    "C2: K♥, Q♥, J♥, 10♥, 9♥, 8♥, 7♥, 6♥, 5♥, 4♥, 3♥, 2♥, A♥\n" +
-                    "C3: K♣, Q♣, J♣, 10♣, 9♣, 8♣, 7♣, 6♣, 5♣, 4♣, 3♣, 2♣, A♣\n" +
-                    "C4: K♦, Q♦, J♦, 10♦, 9♦, 8♦, 7♦, 6♦, 5♦, 4♦, 3♦, 2♦, A♦\n",
-            multimoveModel.getGameState());
+    assertEquals(true, multimoveModel.foundationPileList.get(0).isEmpty());
+    multimoveModel.move(PileType.CASCADE, 0, 12, PileType.FOUNDATION, 0);
+    assertEquals(false, multimoveModel.foundationPileList.get(0).isEmpty());
+
+
   }
 
   @Test

@@ -43,6 +43,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
 
         if (openPileList.size() > sourcePileNumber) {
           if (po.isLastCard(cardIndex)) {
+
             switch (destType) {
 
               case OPEN://dest type
@@ -119,7 +120,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
         }
 
       case CASCADE:
-        Pile pc = cascadePileList.get(sourcePileNumber);//nullPointerException or indexOutOfBounds
+        Pile pc = cascadePileList.get(sourcePileNumber);
 
         if (pc.isEmpty()) throw new IllegalArgumentException("Source pile is empty");
 
@@ -191,12 +192,12 @@ public class FreeCellMultimoveModel extends FreeCellModel {
         } else {
           throw new IllegalArgumentException("Source pile index out of bounds");
         }
-
+        break;//remove
       case FOUNDATION:
         throw new IllegalArgumentException("Cannot move a card out from foundation pile");
 
       default:
-        throw new IllegalArgumentException("Invalid move");
+        throw new IllegalArgumentException("Invalid move!");
 
     }//close bracket for switch source type
   }
@@ -222,6 +223,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
 
   /**
    * Get a deck in descend order.
+   *
    * @return List of card
    */
   @Override
