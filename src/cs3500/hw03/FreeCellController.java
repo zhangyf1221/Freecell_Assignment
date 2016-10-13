@@ -61,6 +61,7 @@ public class FreeCellController implements IFreeCellController<Card> {
       throw new IllegalArgumentException("Model can't be empty");
     }
 
+
     try {
       this.model = model;
       model.startGame(deck, numCascades, numOpens, shuffle);
@@ -71,7 +72,11 @@ public class FreeCellController implements IFreeCellController<Card> {
         e0.printStackTrace();
       }
       try {
-        run();
+        if (model.isGameOver()) {
+          System.out.print("\nGame over.");
+        } else {
+          run();
+        }
       } catch (IllegalArgumentException e1) {
         e1.printStackTrace();
       }
@@ -108,14 +113,7 @@ public class FreeCellController implements IFreeCellController<Card> {
     PileType sourceType;
     PileType destType;
 
-    if (model.isGameOver()) {
-      try {
-        inProgress = false;
-        ap.append("\nGame over.");
-      } catch (IOException e0) {
-        e0.printStackTrace();
-      }
-    }
+
 
     while (inProgress) {
 

@@ -381,9 +381,14 @@ public class FreeCellModel implements IFreeCellModel<Card> {
     for (int i = 1; i < cascadePileList.size() + 1; i++) {
       result += String.format("C%d:", i);
 
+      if (cascadePileList.get(i - 1).isEmpty()) {
+        result += "\n";
+      }
+
       for (int j = 0; j < cascadePileList.get(i - 1).size(); j++) {
         Pile p = cascadePileList.get(i - 1);
         Card c = p.get(j);
+
 
         if (i == cascadePileList.size()) {
           if (j == p.size() - 1) {

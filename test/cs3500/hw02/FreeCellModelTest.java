@@ -115,7 +115,6 @@ public class FreeCellModelTest {
   public void gameOverTest() throws Exception {
     initGame2();
     initGame3();
-    assertEquals(gameState3, model3.getGameState());
     assertEquals(false, model2.isGameOver());
     assertEquals(true, model3.isGameOver());
   }
