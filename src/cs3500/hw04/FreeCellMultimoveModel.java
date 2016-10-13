@@ -5,12 +5,15 @@ package cs3500.hw04;
  */
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs3500.hw02.Card;
 import cs3500.hw02.FreeCellModel;
 import cs3500.hw02.Pile;
 import cs3500.hw02.PileType;
+import cs3500.hw02.Rank;
+import cs3500.hw02.Suit;
 
 /**
  * A FreeCell game model with multimove option
@@ -215,6 +218,23 @@ public class FreeCellMultimoveModel extends FreeCellModel {
     }
 
     return true;
+  }
+
+  /**
+   * Get a deck in descend order.
+   * @return List of card
+   */
+  @Override
+  public List<Card> getDeck() {
+    List<Card> result = new ArrayList<>();
+    Rank ranks[] = Rank.values();
+    Suit suits[] = Suit.values();
+    for (int i = 12; i > -1; i--) {
+      for (int j = 3; j > -1; j--) {
+        result.add(new Card(ranks[i], suits[j]));
+      }
+    }
+    return result;
   }
 
 }

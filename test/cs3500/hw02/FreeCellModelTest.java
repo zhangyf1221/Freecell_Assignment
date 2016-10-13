@@ -120,6 +120,40 @@ public class FreeCellModelTest {
     assertEquals(true, model3.isGameOver());
   }
 
+  @Test
+  public void moveTest() throws Exception {
+    FreeCellModel model4 = new FreeCellModel();
+    List<Card> deck = model4.getDeck();
+    model4.startGame(deck, 4, 4, false);
+    assertEquals("F1:\n" +
+            "F2:\n" +
+            "F3:\n" +
+            "F4:\n" +
+            "O1:\n" +
+            "O2:\n" +
+            "O3:\n" +
+            "O4:\n" +
+            "C1: A♦, 2♦, 3♦, 4♦, 5♦, 6♦, 7♦, 8♦, 9♦, 10♦, J♦, Q♦, K♦\n" +
+            "C2: A♣, 2♣, 3♣, 4♣, 5♣, 6♣, 7♣, 8♣, 9♣, 10♣, J♣, Q♣, K♣\n" +
+            "C3: A♥, 2♥, 3♥, 4♥, 5♥, 6♥, 7♥, 8♥, 9♥, 10♥, J♥, Q♥, K♥\n" +
+            "C4: A♠, 2♠, 3♠, 4♠, 5♠, 6♠, 7♠, 8♠, 9♠, 10♠, J♠, Q♠, K♠\n",
+            model4.getGameState());
+    model4.move(PileType.CASCADE, 0, 12, PileType.OPEN, 0);
+    assertEquals("F1:\n" +
+            "F2:\n" +
+            "F3:\n" +
+            "F4:\n" +
+            "O1: K♦\n" +
+            "O2:\n" +
+            "O3:\n" +
+            "O4:\n" +
+            "C1: A♦, 2♦, 3♦, 4♦, 5♦, 6♦, 7♦, 8♦, 9♦, 10♦, J♦, Q♦\n" +
+            "C2: A♣, 2♣, 3♣, 4♣, 5♣, 6♣, 7♣, 8♣, 9♣, 10♣, J♣, Q♣, K♣\n" +
+            "C3: A♥, 2♥, 3♥, 4♥, 5♥, 6♥, 7♥, 8♥, 9♥, 10♥, J♥, Q♥, K♥\n" +
+            "C4: A♠, 2♠, 3♠, 4♠, 5♠, 6♠, 7♠, 8♠, 9♠, 10♠, J♠, Q♠, K♠\n",
+            model4.getGameState());
+  }
+
   private String gameState1 = "F1:" +
           "\nF2:" +
           "\nF3:" +

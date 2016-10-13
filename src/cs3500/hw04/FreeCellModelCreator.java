@@ -3,10 +3,6 @@ package cs3500.hw04;
 /**
  * Created by GentleFan on 10/10/2016.
  */
-
-
-import cs3500.hw02.Card;
-import cs3500.hw02.IFreeCellModel;
 import cs3500.hw02.FreeCellModel;
 
 /**
@@ -26,7 +22,7 @@ public class FreeCellModelCreator {
     MULTIMOVE;
   }
 
-  public static IFreeCellModel<Card> create(GameType type) {
+  public static FreeCellModel create(GameType type) {
     switch (type) {
       case MULTIMOVE:
         return new FreeCellMultimoveModel();

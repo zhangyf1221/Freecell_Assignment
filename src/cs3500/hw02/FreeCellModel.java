@@ -32,6 +32,10 @@ public class FreeCellModel implements IFreeCellModel<Card> {
     for (int i = 0; i < 4; i++) {
       foundationPileList.add(new Pile());
     }
+    openPileList = new ArrayList<Pile>();
+    cascadePileList = new ArrayList<Pile>();
+    inProgress = true;
+    deck = getDeck();
   }
 
   /**
@@ -72,12 +76,12 @@ public class FreeCellModel implements IFreeCellModel<Card> {
         throw new IllegalArgumentException("Deck is empty");
       }
 
-      cascadePileList = new ArrayList<Pile>();
+
       for (int i = 0; i < numCascadePiles; i++) {
         cascadePileList.add(new Pile());
       }
       // Set up open pile list
-      openPileList = new ArrayList<Pile>();
+
       for (int j = 0; j < numOpenPiles; j++) {
         openPileList.add(new Pile());
       }
@@ -98,7 +102,7 @@ public class FreeCellModel implements IFreeCellModel<Card> {
    * @param deck list of cards
    * @return true is the deck is valid, false if not
    */
-  public boolean validDeck(List<Card> deck) {
+  private boolean validDeck(List<Card> deck) {
     Set<Card> deckSet = new HashSet<Card>(deck);
     return (deckSet.size() == deck.size() && deck.size() == 52);
 
@@ -382,4 +386,8 @@ public class FreeCellModel implements IFreeCellModel<Card> {
 
     return result;
   }
+  public boolean isValidForm(List<Card> pile, int index) {
+    return false;
+  }
+
 }

@@ -1,12 +1,11 @@
 package cs3500.hw04;
 
 import org.junit.Test;
-
 import java.util.List;
-
 import cs3500.hw02.Card;
 import cs3500.hw02.FreeCellModel;
 import cs3500.hw02.Pile;
+import cs3500.hw02.PileType;
 import cs3500.hw02.Rank;
 import cs3500.hw02.Suit;
 import static org.junit.Assert.assertEquals;
@@ -15,9 +14,44 @@ import static org.junit.Assert.assertEquals;
  * Created by jowenfan on 10/12/16.
  */
 public class FreeCellMultimoveModelTest {
+  private Pile validFormPile = new Pile();
+  private Pile invalidOrderFormPile = new Pile();
+  private Pile invalidColorFormPile = new Pile();
+  private FreeCellModel multimoveModel =
+          FreeCellModelCreator.create(FreeCellModelCreator.GameType.MULTIMOVE);
+
   @Test
   public void moveTest() throws Exception {
+    List<Card> deck = multimoveModel.getDeck();
+    multimoveModel.startGame(deck, 4, 4, false);
 
+    assertEquals("F1:\n" +
+                    "F2:\n" +
+                    "F3:\n" +
+                    "F4:\n" +
+                    "O1:\n" +
+                    "O2:\n" +
+                    "O3:\n" +
+                    "O4:\n" +
+                    "C1: K♠, Q♠, J♠, 10♠, 9♠, 8♠, 7♠, 6♠, 5♠, 4♠, 3♠, 2♠, A♠\n" +
+                    "C2: K♥, Q♥, J♥, 10♥, 9♥, 8♥, 7♥, 6♥, 5♥, 4♥, 3♥, 2♥, A♥\n" +
+                    "C3: K♣, Q♣, J♣, 10♣, 9♣, 8♣, 7♣, 6♣, 5♣, 4♣, 3♣, 2♣, A♣\n" +
+                    "C4: K♦, Q♦, J♦, 10♦, 9♦, 8♦, 7♦, 6♦, 5♦, 4♦, 3♦, 2♦, A♦\n",
+            multimoveModel.getGameState());
+    multimoveModel.move(PileType.CASCADE, 0, 12, PileType.OPEN, 0);
+    assertEquals("F1:\n" +
+                    "F2:\n" +
+                    "F3:\n" +
+                    "F4:\n" +
+                    "O1: A♠\n" +
+                    "O2:\n" +
+                    "O3:\n" +
+                    "O4:\n" +
+                    "C1: K♠, Q♠, J♠, 10♠, 9♠, 8♠, 7♠, 6♠, 5♠, 4♠, 3♠, 2♠\n" +
+                    "C2: K♥, Q♥, J♥, 10♥, 9♥, 8♥, 7♥, 6♥, 5♥, 4♥, 3♥, 2♥, A♥\n" +
+                    "C3: K♣, Q♣, J♣, 10♣, 9♣, 8♣, 7♣, 6♣, 5♣, 4♣, 3♣, 2♣, A♣\n" +
+                    "C4: K♦, Q♦, J♦, 10♦, 9♦, 8♦, 7♦, 6♦, 5♦, 4♦, 3♦, 2♦, A♦\n",
+            multimoveModel.getGameState());
   }
 
   @Test
@@ -32,10 +66,6 @@ public class FreeCellMultimoveModelTest {
     assertEquals(false, multimoveModel.isValidForm(invalidColorFormPile.pile, 0));
   }
 
-  private Pile validFormPile = new Pile();
-  private Pile invalidOrderFormPile = new Pile();
-  private Pile invalidColorFormPile = new Pile();
-  private FreeCellMultimoveModel multimoveModel = new FreeCellMultimoveModel();
 
   private void initValidFormPile() {
     validFormPile.add(new Card(Rank.King, Suit.Heart));
