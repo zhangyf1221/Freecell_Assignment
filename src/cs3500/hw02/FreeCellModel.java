@@ -414,4 +414,20 @@ public class FreeCellModel implements IFreeCellModel<Card> {
   public boolean isValidForm(List<Card> pile, int index) {
     return false;
   }
+
+  /**
+   * EDIT: New method added.
+   * Get the number of empty open pile.
+   * @return integer number of empty pile
+   */
+  public int numOfEmptyOpen() {
+    int result = 0;
+    for (int i = 0; i  < openPileList.size(); i++) {
+      if (openPileList.get(i).isEmpty()) {
+        result = result + 1;
+      }
+    }
+    return result;
+  }
+
 }

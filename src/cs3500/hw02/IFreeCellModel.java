@@ -46,7 +46,8 @@ public interface IFreeCellModel<K> {
    * @param destPileNumber   the pile number of the given type, starting at 0
    * @throws IllegalArgumentException if the move is not possible
    */
-  void move(PileType sourceType, int sourcePileNumber, int cardIndex, PileType destType, int destPileNumber)
+  void move(PileType sourceType, int sourcePileNumber, int cardIndex,
+            PileType destType, int destPileNumber)
           throws IllegalArgumentException;
 
   /**
