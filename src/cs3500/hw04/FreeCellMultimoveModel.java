@@ -201,12 +201,20 @@ public class FreeCellMultimoveModel extends FreeCellModel {
   public boolean isValidForm(List<Card> pile, int index) {
     if (pile.size() <= index) throw new IllegalArgumentException("Invalid card index");
     if (index == pile.size() - 1) return true;
-    for (int i = index + 1; i < pile.size(); i++) {
-      if (!(pile.get(i - 1).cardValue() == pile.get(i).cardValue() - 1)
-              || !(pile.get(i - 1).cardColor() == pile.get(i).cardColor())) {
+
+    for (int i = index + 1; i < pile.size(); i++) {//consecutive check
+      if (!(pile.get(i - 1).cardValue() == pile.get(i).cardValue() + 1)) {
         return false;
       }
     }
+
+    for (int i = index + 1; i < pile.size(); i++) {//alternative color check
+      if (pile.get(i - 1).cardColor() == pile.get(i).cardColor()) {
+        return false;
+      }
+    }
+
     return true;
   }
+
 }
