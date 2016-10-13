@@ -148,7 +148,7 @@ public class FreeCellMultimoveModel extends FreeCellModel {
             case CASCADE:
               //TODO: multimove check number of empty free open piles
 
-              if (pc.size() - cardIndex > numOfEmptyOpen()) {
+              if (pc.size() - cardIndex >= numOfEmptyOpen()) {
                 throw new IllegalArgumentException("Not enough empty open piles to " +
                         "support the move");
               }
